@@ -1,0 +1,10 @@
+gradio
+langchain==0.1.17
+langchain-openai
+langchain-chroma
+chromadb
+python-dotenv
+pydantic
+tiktoken
+pypdf
+numpy
