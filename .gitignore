@@ -1,5 +1,7 @@
 .env
+.streamlit/secrets.toml
 __pycache__/
 *.pyc
-# Base vetorial: publicada no Hugging Face Space
+.pytest_cache/
+# Base vetorial antiga (OpenAI/Chroma), substituída por indice/
 chroma_taxbot/
