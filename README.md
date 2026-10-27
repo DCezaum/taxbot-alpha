@@ -51,7 +51,9 @@ taxbot-alpha/
 ├── calculadoras.py     # regras da Lei 15.270/2025 em Decimal
 ├── ingest.py           # gera o índice vetorial a partir dos PDFs
 ├── indice/             # trechos.json + vetores.npy (gerados pelo ingest.py)
-├── tests/              # casos de referência das calculadoras
+├── documentos/         # Lei 15.270 e tabelas oficiais da Receita (prioridade na busca)
+├── tests/              # casos de referência das calculadoras (inclui exemplos da Receita)
+├── evals/              # conjunto de avaliação do agente e relatórios
 └── requirements.txt
 ```
 
@@ -68,6 +70,14 @@ streamlit run app.py
 ```
 
 Testes: `pip install pytest && pytest`.
+
+## Avaliação do agente
+
+`evals/casos.py` reúne perguntas com o que a resposta precisa (e não pode) conter: cálculos com valores
+de referência, conceitos da lei, memória da conversa e comportamento (pedir dados que faltam, admitir
+quando o assunto não está na base). `python evals/avaliar.py` roda tudo contra o Gemini e salva o placar em
+`evals/resultados/`, incluindo um diagnóstico de valores em R$ citados sem origem nas calculadoras ou
+nos documentos. Rode antes e depois de qualquer mudança no prompt, no modelo ou na base.
 
 ## Deploy no Hugging Face Spaces
 
@@ -88,7 +98,7 @@ Testes: `pip install pytest && pytest`.
 - Os documentos de `documentos/` (lei e tabelas oficiais) têm prioridade sobre os estudos da fase de PL.
 - O redutor do IRPFM usa uma alíquota efetiva única da PJ; a lei calcula por empresa pagadora.
 - O plano gratuito do Gemini tem limite diário de requisições e pode usar os dados para treinar modelos.
-- Avaliação: criar um conjunto de perguntas com respostas de referência para medir a precisão das respostas.
+- O conjunto de avaliação verifica trechos esperados no texto, não a qualidade completa da explicação.
 
 > ⚠️ O TaxBot fornece informação geral e **não** constitui aconselhamento tributário, contábil ou jurídico.
 

@@ -235,6 +235,9 @@ def calcular_retencao_dividendos_mensal(dividendos_por_empresa: List[float]) -> 
     no mês à mesma pessoa física, retém-se 10% sobre o valor TOTAL pago por ela no mês. Lucros de
     resultados até 2025 aprovados até 31/12/2025 não sofrem essa retenção.
 
+    Calcula UM único mês. Para o ano todo, chame com os valores de um mês e multiplique pelo número de
+    meses iguais (não passe os 12 meses na lista: cada item é uma empresa diferente).
+
     Args:
         dividendos_por_empresa: valor pago no mês por cada empresa (um item por empresa pagadora).
     """

@@ -42,7 +42,7 @@ def mostrar_detalhes(fontes, ferramentas):
         with st.expander("🧮 Cálculos executados"):
             for f in ferramentas:
                 st.markdown(f"**`{f['nome']}`**")
-                st.json(f["argumentos"], expanded=False)
+                st.json({"entrada": f["argumentos"], "resultado": f.get("resultado", {})}, expanded=False)
     if fontes:
         with st.expander("📚 Trechos consultados"):
             for t in fontes:

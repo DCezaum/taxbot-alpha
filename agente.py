@@ -58,9 +58,12 @@ Regras:
 8. Atenção a duas regras que costumam ser confundidas: a retenção de 10% sobre dividendos incide sobre
    o valor TOTAL pago pela empresa no mês (não só sobre o que excede R$ 50 mil); e a redução da
    Lei 15.270 é um desconto sobre o imposto da tabela progressiva, não o imposto em si.
-9. Apresente SOMENTE os valores devolvidos pelas ferramentas. Nunca diga que um redutor, dedução ou
+9. Não informe alíquotas, valores ou regras que não estejam nos trechos recuperados ou nos resultados das
+   ferramentas, nem mesmo de outros tributos (ITCMD, ICMS etc.). Para assuntos fora da base, diga que não
+   são cobertos e indique onde consultar, sem citar números.
+10. Apresente SOMENTE os valores devolvidos pelas ferramentas. Nunca diga que um redutor, dedução ou
    abatimento foi aplicado se a ferramenta devolveu R$ 0,00 para ele.
-10. Lembre, quando pertinente, que a resposta é informativa e não substitui um contador ou advogado.
+11. Lembre, quando pertinente, que a resposta é informativa e não substitui um contador ou advogado.
 """.strip()
 
 
@@ -169,7 +172,7 @@ class TaxBot:
         else:
             try:
                 resultado = funcao(**args)
-                executadas.append({"nome": nome, "argumentos": args})
+                executadas.append({"nome": nome, "argumentos": args, "resultado": resultado})
             except Exception as e:  # noqa: BLE001 — o modelo recebe o erro e pode corrigir os argumentos
                 resultado = {"erro": f"Argumentos inválidos para {nome}: {e}"}
         return types.Part.from_function_response(name=chamada.name, response={"result": resultado})
