@@ -6,6 +6,7 @@ O índice vetorial fica em indice/ (gerado por ingest.py) e é carregado em mem�
 são poucas centenas de trechos, então não é preciso um banco vetorial.
 """
 import argparse
+import difflib
 import json
 import os
 from dataclasses import dataclass, field
@@ -18,6 +19,8 @@ from google import genai
 from google.genai import errors, types
 
 from calculadoras import FERRAMENTAS
+
+FERRAMENTAS_POR_NOME = {f.__name__: f for f in FERRAMENTAS}
 
 load_dotenv()
 
@@ -49,7 +52,12 @@ Regras:
 6. Use o histórico da conversa para entender perguntas de acompanhamento ("e se fossem 2 dependentes?").
 7. Não use LaTeX nem fórmulas entre cifrões; escreva contas em texto simples (ex.: 30% + 10% = 40%)
    e valores sempre como "R$ 1.234,56".
-8. Lembre, quando pertinente, que a resposta é informativa e não substitui um contador ou advogado.
+8. Atenção a duas regras que costumam ser confundidas: a retenção de 10% sobre dividendos incide sobre
+   o valor TOTAL pago pela empresa no mês (não só sobre o que excede R$ 50 mil); e a redução da
+   Lei 15.270 é um desconto sobre o imposto da tabela progressiva, não o imposto em si.
+9. Apresente SOMENTE os valores devolvidos pelas ferramentas. Nunca diga que um redutor, dedução ou
+   abatimento foi aplicado se a ferramenta devolveu R$ 0,00 para ele.
+10. Lembre, quando pertinente, que a resposta é informativa e não substitui um contador ou advogado.
 """.strip()
 
 
@@ -130,23 +138,51 @@ class TaxBot:
     def __init__(self, api_key: Optional[str] = None, indice: Optional[Indice] = None):
         self.client = criar_client(api_key)
         self.indice = indice or Indice.carregar()
+        # As ferramentas são executadas por nós (e não pelo SDK) para tolerar nomes inventados pelo
+        # modelo (ex.: "calcular_irpf_mensal") e argumentos inválidos, devolvendo o erro ao modelo.
         self.config = types.GenerateContentConfig(
             system_instruction=SYSTEM_PROMPT,
             tools=FERRAMENTAS,
             temperature=0.2,
-            automatic_function_calling=types.AutomaticFunctionCallingConfig(
-                maximum_remote_calls=MAX_CHAMADAS_FERRAMENTA,
-            ),
+            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
         )
 
+    @staticmethod
+    def _executar_ferramenta(chamada: types.FunctionCall, executadas: List[Dict]) -> types.Part:
+        nome = chamada.name
+        if nome not in FERRAMENTAS_POR_NOME:
+            parecidos = difflib.get_close_matches(nome, FERRAMENTAS_POR_NOME, n=1, cutoff=0.8)
+            nome = parecidos[0] if parecidos else nome
+        args = dict(chamada.args or {})
+
+        funcao = FERRAMENTAS_POR_NOME.get(nome)
+        if funcao is None:
+            resultado = {"erro": f"A ferramenta '{chamada.name}' não existe. Use uma destas: "
+                                 f"{', '.join(FERRAMENTAS_POR_NOME)}."}
+        else:
+            try:
+                resultado = funcao(**args)
+                executadas.append({"nome": nome, "argumentos": args})
+            except Exception as e:  # noqa: BLE001 — o modelo recebe o erro e pode corrigir os argumentos
+                resultado = {"erro": f"Argumentos inválidos para {nome}: {e}"}
+        return types.Part.from_function_response(name=chamada.name, response={"result": resultado})
+
+    def _conversar(self, chat, mensagem: str, executadas: List[Dict]) -> types.GenerateContentResponse:
+        resp = chat.send_message(mensagem)
+        for _ in range(MAX_CHAMADAS_FERRAMENTA):
+            if not resp.function_calls:
+                break
+            resp = chat.send_message([self._executar_ferramenta(fc, executadas) for fc in resp.function_calls])
+        return resp
+
     def _gerar(self, historico: List[types.Content], mensagem: str):
-        """Devolve (resposta, conteúdos novos deste turno, incluindo as chamadas de ferramenta)."""
+        """Devolve (resposta, ferramentas executadas com sucesso)."""
         ultimo_erro = None
         for modelo in dict.fromkeys([MODELO, *MODELOS_RESERVA]):
             chat = self.client.chats.create(model=modelo, config=self.config, history=historico)
+            executadas: List[Dict] = []
             try:
-                resp = chat.send_message(mensagem)
-                return resp, chat.get_history()[len(historico):]
+                return self._conversar(chat, mensagem, executadas), executadas
             except errors.APIError as e:
                 if e.code not in ERROS_TENTAR_PROXIMO:
                     raise
@@ -178,14 +214,7 @@ class TaxBot:
             f"TRECHOS RECUPERADOS DOS DOCUMENTOS:\n{_formatar_trechos(trechos)}\n\n"
             f"PERGUNTA DO USUÁRIO:\n{pergunta}"
         )
-        resp, turno = self._gerar(_historico_para_contents(historico), mensagem)
-
-        ferramentas = [
-            {"nome": p.function_call.name, "argumentos": dict(p.function_call.args or {})}
-            for c in turno
-            for p in (c.parts or [])
-            if p.function_call
-        ]
+        resp, ferramentas = self._gerar(_historico_para_contents(historico), mensagem)
         texto = resp.text or "Não consegui gerar uma resposta. Pode reformular a pergunta?"
         return Resposta(texto=texto, fontes=trechos, ferramentas=ferramentas, modelo=resp.model_version or "")
 

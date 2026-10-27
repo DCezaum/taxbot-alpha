@@ -288,7 +288,11 @@ def calcular_irpfm_anual(
     irpfm_bruto = base * aliquota / 100
 
     # Redutor (art. 16-B): limitado, por prudência, à parcela do IRPFM que recai sobre os dividendos.
-    redutor, nota_redutor = ZERO, "Alíquota efetiva da PJ não informada: redutor não aplicado."
+    redutor, nota_redutor = ZERO, (
+        "REDUTOR NÃO APLICADO: a alíquota efetiva de IRPJ+CSLL da empresa não foi informada. Se a empresa "
+        "pagar carga efetiva alta (ex.: lucro real perto de 34%), o IRPFM sobre os dividendos pode cair ou "
+        "zerar; pergunte ao usuário essa alíquota."
+    )
     if aliquota_efetiva_pj is not None and dividendos > 0 and aliquota > 0:
         soma = _d(aliquota_efetiva_pj) + aliquota
         excesso = soma - _d(aliquota_nominal_pj)
