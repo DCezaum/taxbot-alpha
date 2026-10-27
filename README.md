@@ -69,6 +69,13 @@ streamlit run app.py
 
 Testes: `pip install pytest && pytest`.
 
+## Deploy no Hugging Face Spaces
+
+1. Faça login uma vez: `python -c "from huggingface_hub import login; login()"` (token com permissão *Write*,
+   criado em [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)).
+2. No Space, em *Settings → Variables and secrets*, crie o secret `GEMINI_API_KEY`.
+3. Rode `python deploy_hf.py`. O script envia o app e o índice e apaga os arquivos da versão antiga.
+
 ## Deploy no Streamlit Community Cloud
 
 1. Faça commit da pasta `indice/` e envie ao GitHub.
