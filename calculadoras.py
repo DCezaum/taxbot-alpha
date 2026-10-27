@@ -7,7 +7,7 @@ consiga gerar o schema de function calling a partir das anotações) e devolvem 
 valores já formatados em reais.
 
 Referências:
-  • Tabela progressiva mensal: Lei 15.191/2025 (vigente desde 05/2025, mantida para 2026).
+  • Tabelas progressivas mensal e anual de 2026: Receita Federal (Lei 15.191/2025 e Lei 15.270/2025).
   • Redução mensal: art. 3º-A da Lei 9.250/1995, incluído pela Lei 15.270/2025.
   • Redução anual: art. 11-A da Lei 9.250/1995.
   • Retenção de 10% sobre dividendos: art. 6º-A da Lei 9.250/1995.
@@ -29,17 +29,20 @@ TABELA_MENSAL = [
     (D("4664.68"), D("22.5"), D("675.49")),
     (None, D("27.5"), D("908.73")),
 ]
-# Tabela anual = 12 × a mensal (premissa para o ano-calendário 2026; conferir com a Receita).
+# Tabela anual oficial do ano-calendário 2026 (Receita Federal, "Tributação de 2026").
 TABELA_ANUAL = [
-    (lim * 12 if lim is not None else None, aliq, parcela * 12)
-    for lim, aliq, parcela in TABELA_MENSAL
+    (D("29145.60"), D("0"), D("0")),
+    (D("33919.80"), D("7.5"), D("2185.92")),
+    (D("45012.60"), D("15"), D("4729.91")),
+    (D("55976.16"), D("22.5"), D("8105.85")),
+    (None, D("27.5"), D("10904.66")),
 ]
 
 DEDUCAO_DEPENDENTE_MENSAL = D("189.59")
 DEDUCAO_DEPENDENTE_ANUAL = D("2275.08")
 DESCONTO_SIMPLIFICADO_MENSAL = D("607.20")
 DESCONTO_SIMPLIFICADO_ANUAL_PCT = D("0.20")
-DESCONTO_SIMPLIFICADO_ANUAL_TETO = D("16754.34")
+DESCONTO_SIMPLIFICADO_ANUAL_TETO = D("17640.00")  # art. 10, X, da Lei 9.250 (redação da Lei 15.270)
 
 # Redução mensal (art. 3º-A)
 REDUCAO_MENSAL_LIMITE_ISENCAO = D("5000.00")
@@ -165,13 +168,13 @@ def calcular_ir_ajuste_anual(
     """Simula a declaração de ajuste anual do IRPF (ano-calendário 2026 em diante) para rendimentos
     tributáveis (salário, aluguel etc.), com a redução anual da Lei 15.270/2025 (isenção efetiva até
     R$ 60.000/ano e redução decrescente até R$ 88.200/ano). Compara deduções legais com o desconto
-    simplificado (20%, teto R$ 16.754,34) e escolhe o melhor. Informa se há imposto a pagar ou a restituir.
+    simplificado (20%, teto R$ 17.640,00) e escolhe o melhor. Informa se há imposto a pagar ou a restituir.
 
     Args:
         rendimentos_mensais: rendimentos tributáveis brutos de cada mês do ano (não inclua o 13º).
         inss_anual: total de INSS pago no ano.
         dependentes: número de dependentes.
-        outras_deducoes_anuais: soma de saúde, educação (limite legal por pessoa), PGBL, pensão etc.
+        outras_deducoes_anuais: soma de saúde, educação (até R$ 3.561,50 por pessoa), PGBL, pensão etc.
         irrf_retido_total: IR retido na fonte no ano; se omitido, é estimado mês a mês.
     """
     valores = [_d(v) for v in rendimentos_mensais if _d(v) > 0]
@@ -220,7 +223,7 @@ def calcular_ir_ajuste_anual(
         "saldo_do_ajuste": brl(abs(saldo)),
         "situacao": _situacao(saldo),
         "observacao": (
-            "Tabela anual considerada = 12 × tabela mensal. O 13º salário é tributado exclusivamente "
+            "Tabela anual oficial do ano-calendário 2026. O 13º salário é tributado exclusivamente "
             "na fonte e não entra no ajuste."
         ),
     }

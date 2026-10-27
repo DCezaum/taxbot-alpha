@@ -85,7 +85,7 @@ Testes: `pip install pytest && pytest`.
 
 ## Limitações conhecidas e próximos passos
 
-- A tabela anual de 2026 foi considerada como 12 × a mensal; confirmar com a tabela oficial da Receita.
+- Os documentos de `documentos/` (lei e tabelas oficiais) têm prioridade sobre os estudos da fase de PL.
 - O redutor do IRPFM usa uma alíquota efetiva única da PJ; a lei calcula por empresa pagadora.
 - O plano gratuito do Gemini tem limite diário de requisições e pode usar os dados para treinar modelos.
 - Avaliação: criar um conjunto de perguntas com respostas de referência para medir a precisão das respostas.

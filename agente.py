@@ -33,6 +33,7 @@ TIMEOUT_MS = 60_000
 MODELO_EMBEDDING = os.getenv("GEMINI_EMBED_MODEL", "gemini-embedding-001")
 DIMENSAO_EMBEDDING = 768
 INDICE_DIR = Path(__file__).resolve().parent / "indice"
+BONUS_OFICIAL = 0.03
 MAX_MENSAGENS_HISTORICO = 10   # últimas 5 trocas pergunta/resposta
 MAX_CHAMADAS_FERRAMENTA = 6
 
@@ -44,6 +45,8 @@ Regras:
 1. Responda sempre em português do Brasil, em Markdown, de forma clara e didática.
 2. Para perguntas conceituais, baseie-se nos TRECHOS RECUPERADOS enviados junto com a pergunta.
    Se os trechos não cobrirem o assunto, diga isso com honestidade em vez de inventar.
+   Trechos marcados como OFICIAL (texto final da Lei 15.270 e tabelas da Receita) prevalecem sobre os
+   estudos da fase de PL; se houver divergência, siga o oficial e, se útil, diga que a regra mudou na tramitação.
 3. Para QUALQUER cálculo de imposto, use as ferramentas disponíveis. Nunca faça contas de imposto de cabeça.
    Você pode chamar várias ferramentas em sequência (ex.: retenção mensal de dividendos e depois o IRPFM anual).
 4. Se faltar um dado essencial para o cálculo (ex.: valor do rendimento), pergunte ao usuário.
@@ -88,6 +91,8 @@ class Indice:
     def __init__(self, trechos: List[Dict], vetores: np.ndarray):
         self.trechos = trechos
         self.vetores = vetores
+        # Pequena vantagem para a lei e as tabelas oficiais sobre os estudos da fase de PL.
+        self.bonus = np.array([BONUS_OFICIAL if t.get("oficial") else 0.0 for t in trechos], dtype=np.float32)
 
     @classmethod
     def carregar(cls, pasta: Path = INDICE_DIR) -> "Indice":
@@ -101,7 +106,7 @@ class Indice:
 
     def buscar(self, client: genai.Client, consulta: str, k: int = 6) -> List[Dict]:
         q = embed(client, [consulta], "RETRIEVAL_QUERY")[0]
-        scores = self.vetores @ q
+        scores = self.vetores @ q + self.bonus
         top = np.argsort(-scores)[:k]
         return [{**self.trechos[i], "score": float(scores[i])} for i in top]
 
@@ -121,7 +126,9 @@ class LimiteDeUsoError(RuntimeError):
 
 def _formatar_trechos(trechos: List[Dict]) -> str:
     return "\n\n".join(
-        f"[{i}] Fonte: {t['fonte']} (p. {t['pagina']})\n{t['texto']}"
+        f"[{i}] Fonte: {t['fonte']} (p. {t['pagina']}) — "
+        f"{'OFICIAL: texto final da lei/Receita' if t.get('oficial') else 'estudo da fase de PL, pode estar desatualizado'}"
+        f"\n{t['texto']}"
         for i, t in enumerate(trechos, start=1)
     )
 

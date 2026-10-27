@@ -49,7 +49,48 @@ def test_deducoes_legais_quando_maiores_que_simplificado():
     assert r["irrf_mensal"] == "R$ 1.517,00"
 
 
+# ---------- Exemplos oficiais da Receita Federal (documentos/receita_exemplos_lei_15270.md) ----------
+def test_receita_exemplo_1_aliquota_zero():
+    assert calcular_irrf_mensal(3036.00, inss=257.73)["irrf_mensal"] == "R$ 0,00"
+
+
+def test_receita_exemplo_2_ate_5000():
+    r = calcular_irrf_mensal(4000.00, inss=373.41)
+    assert r["imposto_pela_tabela_progressiva"] == "R$ 114,76"
+    assert r["irrf_mensal"] == "R$ 0,00"
+
+
+def test_receita_exemplo_3_exatos_5000():
+    r = calcular_irrf_mensal(5000.00, inss=509.60)
+    assert r["imposto_pela_tabela_progressiva"] == "R$ 312,89"
+    assert r["irrf_mensal"] == "R$ 0,00"
+
+
+def test_receita_exemplo_4_com_reducao():
+    r = calcular_irrf_mensal(6000.00, inss=649.60)
+    assert r["imposto_pela_tabela_progressiva"] == "R$ 562,63"
+    assert r["reducao_lei_15270"] == "R$ 179,75"
+    assert r["irrf_mensal"] == "R$ 382,88"
+
+
+def test_receita_exemplo_5_sem_reducao():
+    assert calcular_irrf_mensal(7607.20)["irrf_mensal"] == "R$ 1.016,27"
+
+
 # ---------- Ajuste anual ----------
+def test_anual_tabela_oficial_zera_em_60000():
+    # Com a tabela anual oficial, o imposto em R$ 60 mil é exatamente a redução máxima da lei (R$ 2.694,15)
+    r = calcular_ir_ajuste_anual([5000] * 12)
+    assert r["imposto_pela_tabela_anual"] == "R$ 2.694,15"
+    assert r["reducao_anual_lei_15270"] == "R$ 2.694,15"
+
+
+def test_anual_teto_simplificado_17640():
+    r = calcular_ir_ajuste_anual([10000] * 12, irrf_retido_total=0)
+    assert r["modelo_de_declaracao"].startswith("simplificado")
+    assert r["deducao_aplicada"] == "R$ 17.640,00"
+
+
 def test_anual_isento_ate_60000():
     r = calcular_ir_ajuste_anual([5000] * 12)
     assert r["imposto_devido_no_ano"] == "R$ 0,00"

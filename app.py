@@ -46,7 +46,8 @@ def mostrar_detalhes(fontes, ferramentas):
     if fontes:
         with st.expander("📚 Trechos consultados"):
             for t in fontes:
-                st.markdown(f"**{t['fonte']}**, p. {t['pagina']}")
+                selo = " · ✅ oficial" if t.get("oficial") else ""
+                st.markdown(f"**{t['fonte']}**, p. {t['pagina']}{selo}")
                 st.caption(escapar_cifrao(t["texto"][:400]) + "…")
 
 

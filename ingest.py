@@ -21,7 +21,8 @@ from pypdf import PdfReader
 from agente import INDICE_DIR, criar_client, embed
 
 RAIZ = Path(__file__).resolve().parent
-PASTAS_PADRAO = [RAIZ.parent / "Memória TaxBot Alpha", RAIZ / "documentos"]
+PASTA_OFICIAL = RAIZ / "documentos"
+PASTAS_PADRAO = [RAIZ.parent / "Memória TaxBot Alpha", PASTA_OFICIAL]
 TAMANHO_TRECHO = 1500
 SOBREPOSICAO = 200
 LOTE = 50
@@ -49,8 +50,10 @@ def ler_documento(caminho: Path) -> List[Dict]:
         paginas = [(i + 1, p.extract_text() or "") for i, p in enumerate(PdfReader(caminho).pages)]
     else:
         paginas = [(1, caminho.read_text(encoding="utf-8"))]
+    # documentos/ guarda o texto final da lei e as tabelas oficiais; o resto são estudos da fase de PL.
+    oficial = caminho.parent.resolve() == PASTA_OFICIAL.resolve()
     return [
-        {"fonte": caminho.name, "pagina": n, "texto": t}
+        {"fonte": caminho.name, "pagina": n, "texto": t, "oficial": oficial}
         for n, texto in paginas
         for t in dividir(texto)
     ]
