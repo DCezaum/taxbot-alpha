@@ -151,6 +151,20 @@ def test_irpfm_redutor_pj_34():
     assert r["irpfm_devido"] == "R$ 0,00"
 
 
+def test_irpfm_autossuficiente():
+    # Sem informar IR do ajuste nem retenção: a ferramenta calcula os dois (R$ 5.280,46 e R$ 120.000)
+    r = calcular_irpfm_anual(78000, dividendos_anuais=1200000)
+    assert r["ir_do_ajuste_anual_abatido"].startswith("R$ 5.280,46")
+    assert r["retencao_10pct_dividendos_abatida"].startswith("R$ 120.000,00")
+    assert r["saldo"] == "R$ 2.519,54"
+    assert r["situacao"] == "a_pagar"
+
+
+def test_irpfm_retencao_automatica_so_acima_de_50mil_mes():
+    r = calcular_irpfm_anual(0, dividendos_anuais=600000)  # 50 mil/mês: não passa do limite
+    assert r["retencao_10pct_dividendos_abatida"].startswith("R$ 0,00")
+
+
 def test_irpfm_redutor_parcial():
     # PJ 30% + IRPFM 10% = 40% → excesso de 6 p.p. → redutor 72.000 sobre 1,2 mi
     r = calcular_irpfm_anual(0, dividendos_anuais=1200000, aliquota_efetiva_pj=30)

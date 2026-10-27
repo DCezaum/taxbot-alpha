@@ -5,3 +5,5 @@ __pycache__/
 .pytest_cache/
 # Base vetorial antiga (OpenAI/Chroma), substituída por indice/
 chroma_taxbot/
+# Configuração local do Claude Code
+.claude/

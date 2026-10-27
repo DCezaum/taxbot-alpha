@@ -6,6 +6,7 @@ Uso:
     python evals/avaliar.py                      # todos os casos
     python evals/avaliar.py --ids irrf-6500 conc-redutor
     python evals/avaliar.py --pausa 8            # segundos entre perguntas (cota gratuita)
+    python evals/avaliar.py --repeticoes 3       # cada caso 3 vezes, para medir a variação do modelo
 
 Relatórios em evals/resultados/AAAA-MM-DD_HHMM.md (+ .json com as respostas completas).
 """
@@ -38,6 +39,8 @@ CONSTANTES_LEGAIS = {
 CONSTANTES_LEGAIS |= {brl(float(v.replace(".", "").replace(",", ".")) + 0.01)[3:] for v in CONSTANTES_LEGAIS}
 RE_REAIS = re.compile(r"R\$\s?(-?\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?)(\s?(?:mil\b|milh[õoãa]o?e?s?\b))?", re.I)
 ESCALA = {"mil": 1_000, "milh": 1_000_000}
+# Grupo de milhar com 1, 2 ou 4+ dígitos (ou primeiro grupo com 4+ dígitos seguido de ponto)
+RE_MALFORMADO = re.compile(r"R\$\s?(?:\d+\.(?:\d{1,2}|\d{4,})(?=[.,\s]|$)|\d{4,}\.\d)[\d.,]*")
 
 
 # =====================  VERIFICAÇÕES  =====================
@@ -104,7 +107,9 @@ def valores_sem_origem(caso: dict, texto: str, ferramentas: list, fontes: list) 
     derivados = {a * k for a in base for k in range(2, 13)}
     derivados |= {a + b for a in base for b in base} | {abs(a - b) for a in base for b in base}
     conhecidos |= {brl(x)[3:] for x in derivados}
-    return sorted(extrair_reais(texto) - conhecidos)
+    # Números com pontuação impossível (ex.: "R$ 96.0000,00") são sempre suspeitos.
+    malformados = {m.group(0) for m in RE_MALFORMADO.finditer(texto)}
+    return sorted(extrair_reais(texto) - conhecidos) + sorted(f"formato inválido: {m}" for m in malformados)
 
 
 # =====================  EXECUÇÃO  =====================
@@ -123,9 +128,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--ids", nargs="*", help="rodar só estes casos")
     parser.add_argument("--pausa", type=float, default=5, help="segundos entre perguntas")
+    parser.add_argument("--repeticoes", type=int, default=1,
+                        help="rodar cada caso N vezes (o modelo varia entre rodadas)")
     args = parser.parse_args()
 
-    casos = [c for c in CASOS if not args.ids or c["id"] in args.ids]
+    selecionados = [c for c in CASOS if not args.ids or c["id"] in args.ids]
+    casos = [
+        {**c, "id": c["id"] + (f"#{n}" if args.repeticoes > 1 else "")}
+        for c in selecionados for n in range(1, args.repeticoes + 1)
+    ]
     bot = TaxBot()
     resultados = []
     for i, caso in enumerate(casos, start=1):
@@ -135,6 +146,8 @@ def main() -> None:
             texto, ferramentas, fontes, modelo = r.texto, r.ferramentas, r.fontes, r.modelo
             falhas = verificar(caso, texto, ferramentas)
             suspeitos = valores_sem_origem(caso, texto, ferramentas, fontes)
+            if suspeitos:  # número que não veio de nenhuma fonte = possível conta errada ou invenção
+                falhas.append(f"valores sem origem: {', '.join(suspeitos)}")
         except Exception as e:  # noqa: BLE001 — um erro conta como reprovação, a avaliação continua
             texto, ferramentas, fontes, modelo = f"ERRO: {type(e).__name__}: {e}", [], [], ""
             falhas, suspeitos = [f"erro: {type(e).__name__}"], []
@@ -182,8 +195,8 @@ def salvar_relatorio(resultados: list) -> None:
                        "**Resposta:**", "", "> " + r["resposta"][:1500].replace("\n", "\n> "), ""]
     if aprovados == total:
         linhas.append("Nenhuma.")
-    linhas += ["", "## Valores em R$ sem origem identificada (diagnóstico)", "",
-               "Valores citados na resposta que não vieram da pergunta, dos trechos nem das calculadoras. "
+    linhas += ["", "## Valores em R$ sem origem identificada", "",
+               "Valores citados na resposta que não vieram da pergunta, dos trechos nem das calculadoras (reprovam o caso). "
                "Podem ser contas simples feitas pelo modelo ou invenções.", ""]
     suspeitos = [r for r in resultados if r["valores_sem_origem"]]
     linhas += [f"- **{r['id']}**: {', '.join('R$ ' + v for v in r['valores_sem_origem'])}" for r in suspeitos] or ["Nenhum."]

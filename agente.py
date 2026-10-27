@@ -11,7 +11,7 @@ import json
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, Iterator, List, Optional, Tuple
 
 import numpy as np
 from dotenv import load_dotenv
@@ -49,6 +49,8 @@ Regras:
    estudos da fase de PL; se houver divergência, siga o oficial e, se útil, diga que a regra mudou na tramitação.
 3. Para QUALQUER cálculo de imposto, use as ferramentas disponíveis. Nunca faça contas de imposto de cabeça.
    Você pode chamar várias ferramentas em sequência (ex.: retenção mensal de dividendos e depois o IRPFM anual).
+   NUNCA estime um argumento numérico que dependa de outro cálculo: deixe-o vazio quando a ferramenta
+   oferece cálculo automático (ex.: IR do ajuste e retenção no IRPFM) ou chame antes a ferramenta que o calcula.
 4. Se faltar um dado essencial para o cálculo (ex.: valor do rendimento), pergunte ao usuário.
    Dados opcionais (INSS, dependentes, deduções) podem ser assumidos como zero, mas diga que assumiu isso.
 5. Ao apresentar um cálculo, mostre os passos principais (base, imposto pela tabela, redução, resultado).
@@ -61,7 +63,10 @@ Regras:
 9. Não informe alíquotas, valores ou regras que não estejam nos trechos recuperados ou nos resultados das
    ferramentas, nem mesmo de outros tributos (ITCMD, ICMS etc.). Para assuntos fora da base, diga que não
    são cobertos e indique onde consultar, sem citar números.
-10. Apresente SOMENTE os valores devolvidos pelas ferramentas. Nunca diga que um redutor, dedução ou
+10. Copie os valores EXATAMENTE como as ferramentas devolveram. Não refaça contas de cabeça (nem somas ou
+   subtrações entre resultados) e nunca ofereça valores alternativos ("ou R$ X"). Se precisar de um valor
+   que nenhuma ferramenta devolveu, chame a ferramenta adequada.
+   Apresente SOMENTE os valores devolvidos pelas ferramentas. Nunca diga que um redutor, dedução ou
    abatimento foi aplicado se a ferramenta devolveu R$ 0,00 para ele.
 11. Lembre, quando pertinente, que a resposta é informativa e não substitui um contador ou advogado.
 """.strip()
@@ -177,23 +182,40 @@ class TaxBot:
                 resultado = {"erro": f"Argumentos inválidos para {nome}: {e}"}
         return types.Part.from_function_response(name=chamada.name, response={"result": resultado})
 
-    def _conversar(self, chat, mensagem: str, executadas: List[Dict]) -> types.GenerateContentResponse:
-        resp = chat.send_message(mensagem)
-        for _ in range(MAX_CHAMADAS_FERRAMENTA):
-            if not resp.function_calls:
-                break
-            resp = chat.send_message([self._executar_ferramenta(fc, executadas) for fc in resp.function_calls])
-        return resp
+    def _conversar_stream(self, chat, mensagem, executadas: List[Dict], resposta: Resposta) -> Iterator[str]:
+        """Envia a mensagem e repassa o texto conforme chega; pedidos de cálculo são executados e
+        devolvidos ao modelo, que continua a resposta (até MAX_CHAMADAS_FERRAMENTA rodadas)."""
+        for _ in range(MAX_CHAMADAS_FERRAMENTA + 1):
+            chamadas = []
+            for pedaco in chat.send_message_stream(mensagem):
+                resposta.modelo = pedaco.model_version or resposta.modelo
+                for parte in (pedaco.candidates[0].content.parts if pedaco.candidates and pedaco.candidates[0].content else None) or []:
+                    if parte.function_call:
+                        chamadas.append(parte.function_call)
+                    elif parte.text and not parte.thought:
+                        yield parte.text
+            if not chamadas:
+                return
+            mensagem = [self._executar_ferramenta(fc, executadas) for fc in chamadas]
 
-    def _gerar(self, historico: List[types.Content], mensagem: str):
-        """Devolve (resposta, ferramentas executadas com sucesso)."""
+    def _gerar_stream(self, historico: List[types.Content], mensagem: str, resposta: Resposta) -> Iterator[str]:
+        """Tenta o modelo principal e os reservas. Só troca de modelo se nada tiver sido exibido ainda."""
         ultimo_erro = None
         for modelo in dict.fromkeys([MODELO, *MODELOS_RESERVA]):
             chat = self.client.chats.create(model=modelo, config=self.config, history=historico)
             executadas: List[Dict] = []
+            exibiu = False
             try:
-                return self._conversar(chat, mensagem, executadas), executadas
+                for texto in self._conversar_stream(chat, mensagem, executadas, resposta):
+                    exibiu = True
+                    yield texto
+                resposta.ferramentas = executadas
+                return
             except errors.APIError as e:
+                if exibiu:
+                    raise LimiteDeUsoError(
+                        "A conexão com o Gemini caiu no meio da resposta. Tente novamente."
+                    ) from e
                 if e.code not in ERROS_TENTAR_PROXIMO:
                     raise
                 ultimo_erro = e
@@ -205,14 +227,17 @@ class TaxBot:
             "Os servidores do Gemini estão sobrecarregados agora. Tente novamente em alguns minutos."
         ) from ultimo_erro
 
-    def responder(self, pergunta: str, historico: Optional[List[Dict]] = None, k: int = 6) -> Resposta:
-        """historico: mensagens anteriores [{"role": "user"|"assistant", "content": str}], sem a pergunta atual."""
+    def responder_stream(
+        self, pergunta: str, historico: Optional[List[Dict]] = None, k: int = 6
+    ) -> Tuple[Resposta, Iterator[str]]:
+        """Busca os trechos e devolve (resposta, gerador de texto). Ao fim do gerador, `resposta` traz
+        o texto completo, as ferramentas executadas e o modelo usado.
+        historico: mensagens anteriores [{"role": "user"|"assistant", "content": str}], sem a pergunta atual."""
         historico = historico or []
         try:
             # Em perguntas de acompanhamento ("e com 2 dependentes?") a pergunta anterior melhora a busca.
             anteriores = [m["content"] for m in historico if m["role"] == "user"][-1:]
             trechos = self.indice.buscar(self.client, "\n".join(anteriores + [pergunta]), k=k)
-
         except errors.APIError as e:
             if e.code == 429:
                 raise LimiteDeUsoError(
@@ -224,9 +249,24 @@ class TaxBot:
             f"TRECHOS RECUPERADOS DOS DOCUMENTOS:\n{_formatar_trechos(trechos)}\n\n"
             f"PERGUNTA DO USUÁRIO:\n{pergunta}"
         )
-        resp, ferramentas = self._gerar(_historico_para_contents(historico), mensagem)
-        texto = resp.text or "Não consegui gerar uma resposta. Pode reformular a pergunta?"
-        return Resposta(texto=texto, fontes=trechos, ferramentas=ferramentas, modelo=resp.model_version or "")
+        resposta = Resposta(texto="", fontes=trechos)
+
+        def gerar() -> Iterator[str]:
+            for texto in self._gerar_stream(_historico_para_contents(historico), mensagem, resposta):
+                resposta.texto += texto
+                yield texto
+            if not resposta.texto.strip():
+                resposta.texto = "Não consegui gerar uma resposta. Pode reformular a pergunta?"
+                yield resposta.texto
+
+        return resposta, gerar()
+
+    def responder(self, pergunta: str, historico: Optional[List[Dict]] = None, k: int = 6) -> Resposta:
+        """Versão sem streaming (terminal e avaliação): consome o mesmo fluxo do app."""
+        resposta, textos = self.responder_stream(pergunta, historico, k)
+        for _ in textos:
+            pass
+        return resposta
 
 
 # =====================  CLI (testes locais)  =====================

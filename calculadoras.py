@@ -125,6 +125,30 @@ def _irrf_mensal_val(bruto, inss=ZERO, dependentes=0, pensao=ZERO, previdencia=Z
     }
 
 
+def _ir_anual_val(total: Decimal, deducoes_legais: Decimal = ZERO) -> Dict:
+    """Imposto devido no ajuste anual: melhor dedução (legais × simplificado), tabela anual e redução."""
+    simplificado = min(total * DESCONTO_SIMPLIFICADO_ANUAL_PCT, DESCONTO_SIMPLIFICADO_ANUAL_TETO)
+    if deducoes_legais >= simplificado:
+        deducao, modelo = deducoes_legais, "completo (deduções legais)"
+    else:
+        deducao, modelo = simplificado, "simplificado (desconto de 20%)"
+
+    base = max(ZERO, total - deducao)
+    imposto_tabela = _imposto_tabela(base, TABELA_ANUAL)
+
+    if total <= REDUCAO_ANUAL_LIMITE_ISENCAO:
+        reducao = min(REDUCAO_ANUAL_MAX, imposto_tabela)
+    elif total <= REDUCAO_ANUAL_LIMITE:
+        reducao = min(max(ZERO, REDUCAO_ANUAL_A - REDUCAO_ANUAL_B * total), imposto_tabela)
+    else:
+        reducao = ZERO
+
+    return {
+        "deducao": deducao, "modelo": modelo, "base": base, "imposto_tabela": imposto_tabela,
+        "reducao": reducao, "devido": _q(imposto_tabela - reducao),
+    }
+
+
 # =====================  FERRAMENTAS (expostas ao LLM)  =====================
 def calcular_irrf_mensal(
     rendimento_bruto_mensal: float,
@@ -193,31 +217,16 @@ def calcular_ir_ajuste_anual(
         origem_retido = "informado pelo usuário"
 
     deducoes_legais = inss_anual + DEDUCAO_DEPENDENTE_ANUAL * int(dependentes or 0) + _d(outras_deducoes_anuais)
-    simplificado = min(total * DESCONTO_SIMPLIFICADO_ANUAL_PCT, DESCONTO_SIMPLIFICADO_ANUAL_TETO)
-    if deducoes_legais >= simplificado:
-        deducao, modelo = deducoes_legais, "completo (deduções legais)"
-    else:
-        deducao, modelo = simplificado, "simplificado (desconto de 20%)"
-
-    base = max(ZERO, total - deducao)
-    imposto_tabela = _imposto_tabela(base, TABELA_ANUAL)
-
-    if total <= REDUCAO_ANUAL_LIMITE_ISENCAO:
-        reducao = min(REDUCAO_ANUAL_MAX, imposto_tabela)
-    elif total <= REDUCAO_ANUAL_LIMITE:
-        reducao = min(max(ZERO, REDUCAO_ANUAL_A - REDUCAO_ANUAL_B * total), imposto_tabela)
-    else:
-        reducao = ZERO
-
-    devido = _q(imposto_tabela - reducao)
+    r = _ir_anual_val(total, deducoes_legais)
+    devido = r["devido"]
     saldo = _q(devido - retido)
     return {
         "rendimentos_tributaveis_anuais": brl(total),
-        "modelo_de_declaracao": modelo,
-        "deducao_aplicada": brl(deducao),
-        "base_de_calculo_anual": brl(base),
-        "imposto_pela_tabela_anual": brl(imposto_tabela),
-        "reducao_anual_lei_15270": brl(reducao),
+        "modelo_de_declaracao": r["modelo"],
+        "deducao_aplicada": brl(r["deducao"]),
+        "base_de_calculo_anual": brl(r["base"]),
+        "imposto_pela_tabela_anual": brl(r["imposto_tabela"]),
+        "reducao_anual_lei_15270": brl(r["reducao"]),
         "imposto_devido_no_ano": brl(devido),
         "irrf_retido_no_ano": f"{brl(retido)} ({origem_retido})",
         "saldo_do_ajuste": brl(abs(saldo)),
@@ -258,9 +267,9 @@ def calcular_irpfm_anual(
     rendimentos_tributaveis_anuais: float,
     dividendos_anuais: float = 0.0,
     outros_rendimentos_isentos_ou_exclusivos: float = 0.0,
-    ir_devido_no_ajuste_anual: float = 0.0,
+    ir_devido_no_ajuste_anual: Optional[float] = None,
     ir_exclusivo_na_fonte: float = 0.0,
-    retencao_dividendos_10pct: float = 0.0,
+    retencao_dividendos_10pct: Optional[float] = None,
     aliquota_efetiva_pj: Optional[float] = None,
     aliquota_nominal_pj: float = 34.0,
 ) -> dict:
@@ -268,6 +277,7 @@ def calcular_irpfm_anual(
     aplicável a quem recebe mais de R$ 600.000 no ano. A alíquota sobe linearmente de 0% (R$ 600 mil)
     a 10% (R$ 1,2 milhão ou mais). Do IRPFM bruto abatem-se o IR do ajuste anual, o IR exclusivo na
     fonte e o redutor (quando PJ + IRPFM superam 34%). Depois abate-se a retenção de 10% sobre dividendos.
+    Esta ferramenta é autossuficiente: NÃO é preciso chamar outras antes dela no caso típico.
 
     NÃO inclua na base: poupança, LCI/LCA/CRI/CRA, FII/Fiagro que cumpram os requisitos, ganhos de capital,
     indenizações, nem lucros de resultados até 2025 aprovados até 31/12/2025.
@@ -276,9 +286,13 @@ def calcular_irpfm_anual(
         rendimentos_tributaveis_anuais: salários, pró-labore, aluguéis etc. do ano.
         dividendos_anuais: lucros e dividendos recebidos no ano (sujeitos à nova regra).
         outros_rendimentos_isentos_ou_exclusivos: demais rendimentos isentos ou tributados na fonte que entram na base.
-        ir_devido_no_ajuste_anual: IR devido na declaração de ajuste (tabela progressiva).
+        ir_devido_no_ajuste_anual: DEIXE VAZIO para calcular automaticamente a partir dos rendimentos
+            tributáveis (desconto simplificado). Só informe se o usuário deu o valor ou se ele veio de
+            calcular_ir_ajuste_anual com deduções. Nunca estime.
         ir_exclusivo_na_fonte: IR já retido de forma definitiva sobre rendimentos incluídos na base.
-        retencao_dividendos_10pct: total retido no ano a título de 10% sobre dividendos.
+        retencao_dividendos_10pct: DEIXE VAZIO para calcular automaticamente supondo dividendos iguais todo
+            mês de uma única empresa. Informe só se o usuário deu o valor ou se veio de
+            calcular_retencao_dividendos_mensal (várias empresas ou meses diferentes).
         aliquota_efetiva_pj: alíquota efetiva (%) de IRPJ+CSLL da empresa que pagou os dividendos, se conhecida.
         aliquota_nominal_pj: alíquota nominal de referência: 34 (geral), 40 (seguradoras etc.) ou 45 (bancos).
     """
@@ -311,9 +325,21 @@ def calcular_irpfm_anual(
         else:
             nota_redutor = f"PJ + IRPFM = {pct(soma)}, não supera {pct(aliquota_nominal_pj)}: sem redutor."
 
-    abatimentos = _d(ir_devido_no_ajuste_anual) + _d(ir_exclusivo_na_fonte) + redutor
+    if ir_devido_no_ajuste_anual is None:
+        ir_ajuste = _ir_anual_val(_d(rendimentos_tributaveis_anuais))["devido"]
+        origem_ir = "calculado (tabela anual 2026, desconto simplificado, sem outras deduções)"
+    else:
+        ir_ajuste, origem_ir = _d(ir_devido_no_ajuste_anual), "informado"
+
+    if retencao_dividendos_10pct is None:
+        mensal = dividendos / 12
+        retencao = _q(dividendos * DIVIDENDOS_ALIQUOTA_FONTE) if mensal > DIVIDENDOS_LIMITE_MENSAL else ZERO
+        origem_ret = "calculada supondo valores iguais nos 12 meses, de uma única empresa"
+    else:
+        retencao, origem_ret = _d(retencao_dividendos_10pct), "informada"
+
+    abatimentos = ir_ajuste + _d(ir_exclusivo_na_fonte) + redutor
     irpfm_devido = _q(max(ZERO, irpfm_bruto - abatimentos))
-    retencao = _d(retencao_dividendos_10pct)
     saldo = _q(irpfm_devido - retencao)
 
     return {
@@ -321,10 +347,11 @@ def calcular_irpfm_anual(
         "sujeito_ao_irpfm": base > IRPFM_PISO,
         "aliquota_irpfm": pct(aliquota),
         "irpfm_bruto": brl(irpfm_bruto),
-        "abatimento_ir_ajuste_e_fonte": brl(_d(ir_devido_no_ajuste_anual) + _d(ir_exclusivo_na_fonte)),
+        "ir_do_ajuste_anual_abatido": f"{brl(ir_ajuste)} ({origem_ir})",
+        "ir_exclusivo_na_fonte_abatido": brl(_d(ir_exclusivo_na_fonte)),
         "redutor_art_16B": brl(redutor),
         "irpfm_devido": brl(irpfm_devido),
-        "retencao_10pct_dividendos_abatida": brl(retencao),
+        "retencao_10pct_dividendos_abatida": f"{brl(retencao)} ({origem_ret})",
         "saldo": brl(abs(saldo)),
         "situacao": _situacao(saldo),
         "observacao": nota_redutor + " O saldo é somado ao resultado da declaração de ajuste anual.",

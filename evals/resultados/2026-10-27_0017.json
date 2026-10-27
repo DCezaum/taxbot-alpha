@@ -1,0 +1,801 @@
+[
+ {
+  "id": "irrf-3000",
+  "categoria": "cálculo mensal",
+  "pergunta": "Ganho R$ 3.000 por mês de salário. Vou ter IR retido na fonte em 2026?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.0,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "rendimento_bruto_mensal": 3000
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 3.000,00",
+     "deducao_aplicada": "R$ 607,20 (desconto simplificado mensal (R$ 607,20))",
+     "base_de_calculo": "R$ 2.392,80",
+     "imposto_pela_tabela_progressiva": "R$ 0,00",
+     "reducao_lei_15270": "R$ 0,00",
+     "irrf_mensal": "R$ 0,00",
+     "aliquota_efetiva_sobre_bruto": "0,00%"
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 vigentes a partir de 2026, **você não terá imposto de renda retido na fonte**.\n\nVeja os detalhes do cálculo para o seu salário mensal de **R$ 3.000,00** (considerando que não há outras deduções informadas, como INSS, dependentes ou pensão):\n\n1. **Desconto Simplificado Mensal**: A aplicação do desconto padrão de **R$ 607,20** substitui as deduções legais por ser mais vantajoso.\n2. **Base de Cálculo**: R$ 3.000,00 - R$ 607,20 = **R$ 2.392,80**.\n3. **Imposto pela Tabela Progressiva**: Como o valor está na primeira faixa da tabela (até R$ 2.428,80), a alíquota é de 0%, resultando em **R$ 0,00**.\n4. **Redução da Lei 15.270/2025**: **R$ 0,00**.\n5. **IRRF Mensal Final**: **R$ 0,00**.\n\n*Nota: Esta resposta é informativa e baseada na legislação vigente, não substituindo a avaliação de um profissional contábil ou jurídico.*"
+ },
+ {
+  "id": "irrf-receita-ex4",
+  "categoria": "cálculo mensal",
+  "pergunta": "Recebo R$ 6.000 de salário e pago R$ 649,60 de INSS. Quanto de IR é retido por mês em 2026?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.9,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "rendimento_bruto_mensal": 6000,
+     "inss": 649.6
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 6.000,00",
+     "deducao_aplicada": "R$ 649,60 (deduções legais)",
+     "base_de_calculo": "R$ 5.350,40",
+     "imposto_pela_tabela_progressiva": "R$ 562,63",
+     "reducao_lei_15270": "R$ 179,75",
+     "irrf_mensal": "R$ 382,88",
+     "aliquota_efetiva_sobre_bruto": "6,38%"
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 vigentes em 2026, o cálculo do Imposto de Renda Retido na Fonte (IRRF) mensal para o seu rendimento é o seguinte:\n\n1. **Rendimento Bruto:** R$ 6.000,00\n2. **Deduções:** R$ 649,60 (referente à contribuição do INSS, que é mais vantajosa do que o desconto simplificado mensal de R$ 607,20).\n3. **Base de Cálculo:** R$ 5.350,40\n4. **Imposto pela Tabela Progressiva:** R$ 562,63 (já aplicando a alíquota de 27,5% e a parcela a deduzir de R$ 908,73).\n5. **Redução da Lei 15.270/2025:** R$ 179,75 (calculada pela fórmula decrescente para rendimentos entre R$ 5.000,01 e R$ 7.350,00).\n\nO valor do **IRRF mensal** a ser retido é de **R$ 382,88**.\n\n*Nota: Esta resposta tem caráter informativo e não substitui a orientação de um profissional contábil ou fiscal.*"
+ },
+ {
+  "id": "irrf-receita-ex5",
+  "categoria": "cálculo mensal",
+  "pergunta": "Meu salário é R$ 7.607,20 e não tenho deduções. Quanto pago de IR na fonte?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.9,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "previdencia_privada": 0,
+     "rendimento_bruto_mensal": 7607.2,
+     "inss": 0,
+     "pensao_alimenticia": 0,
+     "dependentes": 0
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 7.607,20",
+     "deducao_aplicada": "R$ 607,20 (desconto simplificado mensal (R$ 607,20))",
+     "base_de_calculo": "R$ 7.000,00",
+     "imposto_pela_tabela_progressiva": "R$ 1.016,27",
+     "reducao_lei_15270": "R$ 0,00",
+     "irrf_mensal": "R$ 1.016,27",
+     "aliquota_efetiva_sobre_bruto": "13,36%"
+    }
+   }
+  ],
+  "resposta": "Com base na **Lei 15.270/2025**, para um salário bruto mensal de **R$ 7.607,20** sem deduções legais, o cálculo do Imposto sobre a Renda Retido na Fonte (IRRF) é o seguinte:\n\n1. **Desconto aplicado:** O desconto simplificado mensal de **R$ 607,20** é mais vantajoso do que as deduções legais (que são zero).\n2. **Base de cálculo:** R$ 7.607,20 – R$ 607,20 = **R$ 7.000,00**.\n3. **Imposto pela tabela progressiva:** O valor enquadra-se na faixa de 27,5%, resultando em um imposto de **R$ 1.016,27** (após a dedução da parcela correspondente).\n4. **Redução da Lei 15.270/2025:** Como o salário bruto (R$ 7.607,20) é superior ao limite de R$ 7.350,00 previsto na regra de transição, **não há redução** (R$ 0,00).\n\nO valor do IR retido na fonte no mês é de **R$ 1.016,27**.\n\n*Aviso: Esta resposta é informativa e baseada na legislação vigente, não substituindo a consulta a um contador ou profissional especializado.*"
+ },
+ {
+  "id": "irrf-6500",
+  "categoria": "cálculo mensal",
+  "pergunta": "Ganho R$ 6.500 por mês. Quanto vou pagar de IR na fonte por mês em 2026?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.1,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "rendimento_bruto_mensal": 6500
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 6.500,00",
+     "deducao_aplicada": "R$ 607,20 (desconto simplificado mensal (R$ 607,20))",
+     "base_de_calculo": "R$ 5.892,80",
+     "imposto_pela_tabela_progressiva": "R$ 711,79",
+     "reducao_lei_15270": "R$ 113,18",
+     "irrf_mensal": "R$ 598,61",
+     "aliquota_efetiva_sobre_bruto": "9,21%"
+    }
+   }
+  ],
+  "resposta": "Com base nas novas regras da Lei 15.270/2025 vigentes em 2026, para um rendimento bruto mensal de **R$ 6.500,00** (sem considerar deduções específicas como INSS ou dependentes, utilizando o desconto simplificado padrão), o imposto retido na fonte será de **R$ 598,61** por mês.\n\nVeja o passo a passo do cálculo:\n\n1. **Rendimento Bruto Mensal:** R$ 6.500,00\n2. **Desconto Simplificado Mensal:** R$ 607,20 *(mais vantajoso que as deduções legais básicas)*\n3. **Base de Cálculo:** R$ 5.892,80\n4. **Imposto pela Tabela Progressiva:** R$ 711,79 *(faixa de 27,5% com dedução de R$ 908,73)*\n5. **Redução da Lei 15.270/2025:** R$ 113,18 *(calculada pela fórmula decrescente para rendimentos entre R$ 5.000,01 e R$ 7.350,00)*\n6. **IRRF Mensal a Pagar:** **R$ 598,61** *(com alíquota efetiva sobre o bruto de 9,21%)*\n\n*Nota: Este cálculo é informativo e baseia-se nas tabelas oficiais de 2026. Caso você possua outras deduções (como previdência oficial maior, pensão alimentícia ou dependentes), o valor do imposto pode ser ligeiramente menor.*"
+ },
+ {
+  "id": "irrf-deducoes",
+  "categoria": "cálculo mensal",
+  "pergunta": "Salário de R$ 10.000, INSS de R$ 800 e 2 dependentes. Qual o IR retido no mês?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.9,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "rendimento_bruto_mensal": 10000,
+     "inss": 800,
+     "dependentes": 2
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 10.000,00",
+     "deducao_aplicada": "R$ 1.179,18 (deduções legais)",
+     "base_de_calculo": "R$ 8.820,82",
+     "imposto_pela_tabela_progressiva": "R$ 1.517,00",
+     "reducao_lei_15270": "R$ 0,00",
+     "irrf_mensal": "R$ 1.517,00",
+     "aliquota_efetiva_sobre_bruto": "15,17%"
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 para o cálculo do Imposto de Renda Retido na Fonte (IRRF) mensal, veja o passo a passo para um salário bruto de **R$ 10.000,00**, com **R$ 800,00** de INSS e **2 dependentes**:\n\n### 1. Escolha entre o Desconto Simplificado e as Deduções Legais\n* **Desconto simplificado mensal:** R$ 607,20.\n* **Deduções legais:** \n  * INSS: R$ 800,00\n  * Dependentes (2): R$ 379,18 (considerando o valor oficial por dependente utilizado no cálculo).\n  * **Total das deduções legais:** R$ 1.179,18.\n\nComo as deduções legais (R$ 1.179,18) são mais vantajosas do que o desconto simplificado (R$ 607,20), elas foram aplicadas no cálculo.\n\n### 2. Base de Cálculo do Imposto\n* Rendimento Bruto: R$ 10.000,00\n* Subtração das deduções legais: - R$ 1.179,18\n* **Base de cálculo:** **R$ 8.820,82**\n\n### 3. Aplicação da Tabela Progressiva\nCom a base de cálculo de R$ 8.820,82, aplica-se a tabela progressiva vigente:\n* **Imposto pela tabela progressiva:** R$ 1.517,00\n\n### 4. Redução da Lei 15.270/2025\n* Como o rendimento bruto mensal (R$ 10.000,00) é superior ao limite de R$ 7.350,00 estabelecido para a concessão da redução, **não há redução** aplicável (redução de R$ 0,00).\n\n---\n\n### Resultado Final\n* **IRRF do mês:** **R$ 1.517,00**\n\n*Nota: Este cálculo é informativo e baseia-se na legislação federal vigente (Lei 15.270/2025). Em caso de dúvidas específicas sobre sua declaração, consulte um contador ou profissional especializado.*"
+ },
+ {
+  "id": "irrf-memoria",
+  "categoria": "memória",
+  "pergunta": "E se eu tiver 2 dependentes e pagar R$ 660 de INSS?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.1,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "rendimento_bruto_mensal": 6000,
+     "inss": 660,
+     "dependentes": 2
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 6.000,00",
+     "deducao_aplicada": "R$ 1.039,18 (deduções legais)",
+     "base_de_calculo": "R$ 4.960,82",
+     "imposto_pela_tabela_progressiva": "R$ 455,50",
+     "reducao_lei_15270": "R$ 179,75",
+     "irrf_mensal": "R$ 275,75",
+     "aliquota_efetiva_sobre_bruto": "4,60%"
+    }
+   }
+  ],
+  "resposta": "Com um rendimento bruto de R$ 6.000,00, 2 dependentes e R$ 660,00 de INSS, o cálculo do IRRF mensal (com base na Lei 15.270/2025) é o seguinte:\n\n- **Rendimento bruto mensal:** R$ 6.000,00\n- **Deduções aplicadas:** R$ 1.039,18 (foram usadas as deduções legais, que se mostraram mais vantajosas que o desconto simplificado, somando o INSS de R$ 660,00 e a dedução por dependentes)\n- **Base de cálculo:** R$ 4.960,82\n- **Imposto pela tabela progressiva:** R$ 455,50\n- **Redução da Lei 15.270/2025:** R$ 179,75\n- **Imposto sobre a Renda Retido na Fonte (IRRF):** R$ 275,75\n\n*Nota: Esta resposta é informativa e não substitui a orientação de um contador ou advogado.*"
+ },
+ {
+  "id": "anual-60mil",
+  "categoria": "cálculo anual",
+  "pergunta": "Ganhei R$ 5.000 todos os meses de 2026. Vou ter imposto a pagar na declaração de 2027?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.0,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_ir_ajuste_anual",
+    "argumentos": {
+     "rendimentos_mensais": [
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000,
+      5000
+     ]
+    },
+    "resultado": {
+     "rendimentos_tributaveis_anuais": "R$ 60.000,00",
+     "modelo_de_declaracao": "simplificado (desconto de 20%)",
+     "deducao_aplicada": "R$ 12.000,00",
+     "base_de_calculo_anual": "R$ 48.000,00",
+     "imposto_pela_tabela_anual": "R$ 2.694,15",
+     "reducao_anual_lei_15270": "R$ 2.694,15",
+     "imposto_devido_no_ano": "R$ 0,00",
+     "irrf_retido_no_ano": "R$ 0,00 (estimado mês a mês (INSS distribuído igualmente entre os meses))",
+     "saldo_do_ajuste": "R$ 0,00",
+     "situacao": "zerado",
+     "observacao": "Tabela anual oficial do ano-calendário 2026. O 13º salário é tributado exclusivamente na fonte e não entra no ajuste."
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 para o ano-calendário de 2026, **você não terá imposto a pagar** na sua declaração de ajuste anual em 2027.\n\nVeja os passos do cálculo realizado:\n\n1. **Rendimentos tributáveis no ano:** R$ 60.000,00 (12 meses de R$ 5.000,00).\n2. **Modelo de declaração aplicado:** Simplificado (desconto de 20%), resultando em uma base de cálculo anual de R$ 48.000,00.\n3. **Imposto apurado pela tabela progressiva anual:** R$ 2.694,15.\n4. **Redução anual da Lei 15.270/2025:** Para rendimentos até R$ 60.000,00 por ano, a redução é de até R$ 2.694,15, zerando o imposto devido.\n5. **Saldo do ajuste:** R$ 0,00 (não há imposto a pagar nem a restituir).\n\n*Nota: Esta resposta é informativa e baseada na legislação vigente (Lei 15.270/2025). Em caso de dúvidas específicas sobre sua situação fiscal, consulte um contador ou advogado.*"
+ },
+ {
+  "id": "anual-saude",
+  "categoria": "cálculo anual",
+  "pergunta": "Ganho R$ 8.000 por mês, sem INSS informado, e tive R$ 20.000 de despesas médicas em 2026. Como fica meu ajuste anual?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.2,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_ir_ajuste_anual",
+    "argumentos": {
+     "irrf_retido_total": null,
+     "inss_anual": 0,
+     "rendimentos_mensais": [
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000
+     ],
+     "dependentes": 0,
+     "outras_deducoes_anuais": 20000
+    },
+    "resultado": {
+     "rendimentos_tributaveis_anuais": "R$ 96.000,00",
+     "modelo_de_declaracao": "completo (deduções legais)",
+     "deducao_aplicada": "R$ 20.000,00",
+     "base_de_calculo_anual": "R$ 76.000,00",
+     "imposto_pela_tabela_anual": "R$ 9.995,34",
+     "reducao_anual_lei_15270": "R$ 0,00",
+     "imposto_devido_no_ano": "R$ 9.995,34",
+     "irrf_retido_no_ano": "R$ 13.491,48 (estimado mês a mês (INSS distribuído igualmente entre os meses))",
+     "saldo_do_ajuste": "R$ 3.496,14",
+     "situacao": "a_restituir",
+     "observacao": "Tabela anual oficial do ano-calendário 2026. O 13º salário é tributado exclusivamente na fonte e não entra no ajuste."
+    }
+   }
+  ],
+  "resposta": "Com base nos dados informados (salário bruto de R$ 8.000,00 por mês, sem INSS informado, e R$ 20.000,00 de despesas médicas no ano-calendário de 2026), veja como fica a simulação da sua declaração de ajuste anual do IRPF pela Lei 15.270/2025:\n\n### 1. Rendimentos e Deduções\n* **Rendimentos tributáveis anuais (12 meses):** R$ 96.000,00 (excluindo o 13º salário, que é tributado exclusivamente na fonte).\n* **Modelo escolhido:** Completo (deduções legais), pois as despesas médicas de R$ 20.000,00 foram mais vantajosas do que o desconto simplificado anual.\n* **Base de cálculo anual:** R$ 76.000,00 *(R$ 96.000,00 – R$ 20.000,00 de deduções)*.\n\n### 2. Cálculo do Imposto\n* **Imposto pela tabela anual:** R$ 9.995,34.\n* **Redução anual (Lei 15.270/2025):** R$ 0,00 *(rendimentos tributáveis acima de R$ 88.200,00 não têm direito à redução)*.\n* **Imposto devido no ano:** R$ 9.995,34.\n\n### 3. Acerto com a Receita\n* **IRRF retido no total do ano (estimado):** R$ 13.491,48.\n* **Resultado:** Como o imposto retido na fonte ao longo do ano foi superior ao imposto devido, você tem imposto **a restituir**.\n\n* **Saldo do ajuste (restituição):** **R$ 3.496,14**\n\n*(Nota: Como você não informou o INSS, assumimos o valor como zero para este cálculo. Esta resposta é informativa e não substitui a consulta a um contador ou advogado.)*"
+ },
+ {
+  "id": "anual-simplificado-teto",
+  "categoria": "cálculo anual",
+  "pergunta": "Recebo R$ 10.000 por mês e não tenho deduções. Qual o imposto devido no ajuste anual de 2026?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.4,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_ir_ajuste_anual",
+    "argumentos": {
+     "rendimentos_mensais": [
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000,
+      10000
+     ]
+    },
+    "resultado": {
+     "rendimentos_tributaveis_anuais": "R$ 120.000,00",
+     "modelo_de_declaracao": "simplificado (desconto de 20%)",
+     "deducao_aplicada": "R$ 17.640,00",
+     "base_de_calculo_anual": "R$ 102.360,00",
+     "imposto_pela_tabela_anual": "R$ 17.244,34",
+     "reducao_anual_lei_15270": "R$ 0,00",
+     "imposto_devido_no_ano": "R$ 17.244,34",
+     "irrf_retido_no_ano": "R$ 20.091,48 (estimado mês a mês (INSS distribuído igualmente entre os meses))",
+     "saldo_do_ajuste": "R$ 2.847,14",
+     "situacao": "a_restituir",
+     "observacao": "Tabela anual oficial do ano-calendário 2026. O 13º salário é tributado exclusivamente na fonte e não entra no ajuste."
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 para o ano-calendário de 2026, simulamos a sua Declaração de Ajuste Anual para um rendimento bruto de R$ 10.000,00 por mês (totalizando R$ 120.000,00 no ano), considerando ausência de deduções legais e INSS zero:\n\n1. **Rendimentos Tributáveis Anuais:** R$ 120.000,00\n2. **Modelo de Declaração:** Simplificado (desconto de 20%, limitado a R$ 17.640,00)\n3. **Base de Cálculo Anual:** R$ 102.360,00\n4. **Imposto Pela Tabela Anual:** R$ 17.244,34\n5. **Redução Anual (Lei 15.270):** R$ 0,00 (pois a renda anual supera o limite de R$ 88.200,00)\n6. **IRRF Retido no Ano (estimado):** R$ 20.091,48\n7. **Resultado:** **R$ 2.847,14 a restituir**\n\n*Nota: Esta simulação é estritamente informativa e baseada nos parâmetros da legislação vigente. Não substitui a apuração oficial realizada na declaração ou a consulta a um profissional contábil.*"
+ },
+ {
+  "id": "div-duas-empresas",
+  "categoria": "dividendos",
+  "pergunta": "Neste mês recebi R$ 60 mil de dividendos da empresa A e R$ 30 mil da empresa B. Quanto foi retido?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.1,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_retencao_dividendos_mensal",
+    "argumentos": {
+     "dividendos_por_empresa": [
+      60000,
+      30000
+     ]
+    },
+    "resultado": {
+     "por_empresa": [
+      {
+       "empresa": 1,
+       "dividendos": "R$ 60.000,00",
+       "retencao_10pct": "R$ 6.000,00"
+      },
+      {
+       "empresa": 2,
+       "dividendos": "R$ 30.000,00",
+       "retencao_10pct": "R$ 0,00"
+      }
+     ],
+     "total_retido_no_mes": "R$ 6.000,00",
+     "observacao": "A retenção é antecipação: é abatida do IRPFM no ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 para a retenção na fonte de lucros e dividendos, o cálculo é feito **por empresa pagadora**:\n\n- **Empresa A (R$ 60.000,00 no mês):** Como o valor ultrapassa o limite de R$ 50.000,00 pago por uma mesma empresa no mês, aplica-se a alíquota de 10% sobre o **valor total** pago por ela.\n  - Retenção: R$ 60.000,00 x 10% = **R$ 6.000,00**\n\n- **Empresa B (R$ 30.000,00 no mês):** Como o valor está abaixo do limite de R$ 50.000,00 pago por essa empresa no mês, não há retenção.\n  - Retenção: **R$ 0,00**\n\n### Resumo\n- **Total retido no mês:** R$ 6.000,00\n\n*Nota: Esta retenção na fonte é uma antecipação e poderá ser abatida do IRPFM (Tributação Mínima Anual das Altas Rendas) no ajuste anual.*\n\n---\n*Aviso: Esta resposta é informativa e baseada na legislação vigente (Lei 15.270/2025), não substituindo a consulta a um contador ou advogado tributarista.*"
+ },
+ {
+  "id": "div-50mil",
+  "categoria": "dividendos",
+  "pergunta": "Uma empresa me pagou exatamente R$ 50.000 de dividendos este mês. Tem retenção de 10%?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.8,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_retencao_dividendos_mensal",
+    "argumentos": {
+     "dividendos_por_empresa": [
+      50000
+     ]
+    },
+    "resultado": {
+     "por_empresa": [
+      {
+       "empresa": 1,
+       "dividendos": "R$ 50.000,00",
+       "retencao_10pct": "R$ 0,00"
+      }
+     ],
+     "total_retido_no_mes": "R$ 0,00",
+     "observacao": "A retenção é antecipação: é abatida do IRPFM no ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base na Lei 15.270/2025, **não há retenção** de 10% nesse caso. \n\nA regra estabelece que a retenção na fonte de 10% sobre lucros e dividendos aplica-se apenas a pagamentos feitos por uma mesma pessoa jurídica a uma mesma pessoa física em montante **superior** a R$ 50.000,00 em um mesmo mês. Como o valor foi de **exatamente R$ 50.000,00**, ele não ultrapassa o limite de incidência.\n\n*Resumo do cálculo pela ferramenta oficial:*\n- **Valor pago no mês:** R$ 50.000,00\n- **Retenção de 10%:** R$ 0,00\n- **Total retido no mês:** R$ 0,00\n\n*Nota: Esta resposta é informativa e não substitui a consulta a um contador ou advogado tributarista.*"
+ },
+ {
+  "id": "irpfm-100k-mes",
+  "categoria": "IRPFM",
+  "pergunta": "Recebo R$ 100 mil por mês de dividendos de uma única empresa, o ano todo, e nenhuma outra renda. Quanto pago de IRPFM no ajuste?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.3,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_retencao_dividendos_mensal",
+    "argumentos": {
+     "dividendos_por_empresa": [
+      100000
+     ]
+    },
+    "resultado": {
+     "por_empresa": [
+      {
+       "empresa": 1,
+       "dividendos": "R$ 100.000,00",
+       "retencao_10pct": "R$ 10.000,00"
+      }
+     ],
+     "total_retido_no_mes": "R$ 10.000,00",
+     "observacao": "A retenção é antecipação: é abatida do IRPFM no ajuste anual."
+    }
+   },
+   {
+    "nome": "calcular_irpfm_anual",
+    "argumentos": {
+     "retencao_dividendos_10pct": 120000,
+     "dividendos_anuais": 1200000,
+     "rendimentos_tributaveis_anuais": 0,
+     "outros_rendimentos_isentos_ou_exclusivos": 0
+    },
+    "resultado": {
+     "base_irpfm": "R$ 1.200.000,00",
+     "sujeito_ao_irpfm": true,
+     "aliquota_irpfm": "10,00%",
+     "irpfm_bruto": "R$ 120.000,00",
+     "ir_do_ajuste_anual_abatido": "R$ 0,00 (calculado (tabela anual 2026, desconto simplificado, sem outras deduções))",
+     "ir_exclusivo_na_fonte_abatido": "R$ 0,00",
+     "redutor_art_16B": "R$ 0,00",
+     "irpfm_devido": "R$ 120.000,00",
+     "retencao_10pct_dividendos_abatida": "R$ 120.000,00 (informada)",
+     "saldo": "R$ 0,00",
+     "situacao": "zerado",
+     "observacao": "REDUTOR NÃO APLICADO: a alíquota efetiva de IRPJ+CSLL da empresa não foi informada. Se a empresa pagar carga efetiva alta (ex.: lucro real perto de 34%), o IRPFM sobre os dividendos pode cair ou zerar; pergunte ao usuário essa alíquota. O saldo é somado ao resultado da declaração de ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 vigentes a partir de 2026, veja como fica a tributação no seu caso:\n\n### 1. Retenção Mensal na Fonte\n* **Rendimento:** R$ 100.000,00 por mês de dividendos de uma única empresa.\n* **Regra:** Como o valor ultrapassa R$ 50.000,00 por mês nessa empresa, há retenção de **10%** sobre o valor total pago no mês.\n* **Retenção mensal:** R$ 10.000,00 por mês (totalizando **R$ 120.000,00** no ano).\n\n### 2. Cálculo do IRPFM Anual (Imposto de Renda da Pessoa Física Mínimo)\n* **Base de cálculo anual:** R$ 1.200.000,00 (12 meses x R$ 100.000,00).\n* **Alíquota aplicável:** Para rendimentos iguais ou superiores a R$ 1.200.000,00, a alíquota da tributação mínima é de **10%**.\n* **IRPFM bruto:** R$ 120.000,00 (10% sobre R$ 1.200.000,00).\n* **Abatimento da retenção de 10% sobre dividendos:** R$ 120.000,00.\n* **IRPFM devido final:** **R$ 0,00** (zerado, pois a retenção mensal já cobriu o imposto mínimo devido).\n\n*(Observação: Não foi aplicado redutor por tributação na PJ, pois a alíquota efetiva da empresa não foi informada. Caso a empresa pague IRPJ/CSLL em patamares elevados, o cálculo pode ser neutralizado, conforme a lei).*\n\n---\n*Aviso: Esta simulação é informativa e baseia-se na Lei 15.270/2025. Consulte um contador ou advogado tributarista para a análise do seu caso específico.*"
+ },
+ {
+  "id": "irpfm-salario-dividendos",
+  "categoria": "IRPFM",
+  "pergunta": "Recebo R$ 6.500 por mês de salário e R$ 100 mil por mês de dividendos de uma empresa, sem outras rendas nem deduções. Quanto fica o IRPFM a pagar no ajuste?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.3,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irpfm_anual",
+    "argumentos": {
+     "rendimentos_tributaveis_anuais": 78000,
+     "dividendos_anuais": 1200000,
+     "aliquota_nominal_pj": 34,
+     "outros_rendimentos_isentos_ou_exclusivos": 0
+    },
+    "resultado": {
+     "base_irpfm": "R$ 1.278.000,00",
+     "sujeito_ao_irpfm": true,
+     "aliquota_irpfm": "10,00%",
+     "irpfm_bruto": "R$ 127.800,00",
+     "ir_do_ajuste_anual_abatido": "R$ 5.280,46 (calculado (tabela anual 2026, desconto simplificado, sem outras deduções))",
+     "ir_exclusivo_na_fonte_abatido": "R$ 0,00",
+     "redutor_art_16B": "R$ 0,00",
+     "irpfm_devido": "R$ 122.519,54",
+     "retencao_10pct_dividendos_abatida": "R$ 120.000,00 (calculada supondo valores iguais nos 12 meses, de uma única empresa)",
+     "saldo": "R$ 2.519,54",
+     "situacao": "a_pagar",
+     "observacao": "REDUTOR NÃO APLICADO: a alíquota efetiva de IRPJ+CSLL da empresa não foi informada. Se a empresa pagar carga efetiva alta (ex.: lucro real perto de 34%), o IRPFM sobre os dividendos pode cair ou zerar; pergunte ao usuário essa alíquota. O saldo é somado ao resultado da declaração de ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base nos dados informados (salário bruto de R$ 6.500,00 por mês, totalizando R$ 78.000,00 no ano, e dividendos de R$ 100.000,00 por mês, totalizando R$ 1.200.000,00 no ano, sem dependentes, INSS não informado e sem outras deduções), veja a simulação do **IRPFM (Imposto de Renda da Pessoa Física Mínimo)** instituído pela Lei 15.270/2025:\n\n### 1. Dados Anuais Consolidados\n* **Rendimentos tributáveis anuais (salário):** R$ 78.000,00\n* **Dividendos anuais:** R$ 1.200.000,00\n* **Base de cálculo total do IRPFM:** R$ 1.278.000,00\n\n### 2. Apuração do IRPFM Bruto\nComo a renda total ultrapassa R$ 1.200.000,00, aplica-se a alíquota máxima de **10%** sobre o valor total:\n* **IRPFM Bruto:** R$ 127.800,00\n\n### 3. Deduções e Abatimentos\nDo IRPFM bruto, abatem-se os valores já pagos de imposto:\n* **IR do ajuste anual (salário):** R$ 5.280,46\n* **Retenção de 10% sobre dividendos (retida na fonte ao longo do ano):** R$ 120.000,00\n\n### 4. Resultado Final\n* **IRPFM a pagar:** **R$ 2.519,54** (a pagar)\n\n---\n\n*Observação importante:* O cálculo acima utilizou a alíquota nominal padrão de 34% de IRPJ+CSLL da PJ. Se a empresa pagadora possuir uma carga tributária efetiva diferenciada, o redutor de alta renda (art. 16-B da Lei 15.270/2025) pode neutralizar total ou parcialmente este saldo remanescente. \n\n*Aviso: Esta resposta é informativa e baseia-se nas regras da Lei 15.270/2025; não substitui a consulta a um contador ou advogado tributarista.*"
+ },
+ {
+  "id": "irpfm-faixa-intermediaria",
+  "categoria": "IRPFM",
+  "pergunta": "No ano tive R$ 300 mil de salário e R$ 600 mil de dividendos (R$ 50 mil por mês de uma empresa). O IR devido no meu ajuste foi R$ 20 mil. Quanto devo de IRPFM?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 9.2,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irpfm_anual",
+    "argumentos": {
+     "ir_exclusivo_na_fonte": 0,
+     "rendimentos_tributaveis_anuais": 300000,
+     "dividendos_anuais": 600000,
+     "outros_rendimentos_isentos_ou_exclusivos": 0,
+     "aliquota_efetiva_pj": null,
+     "aliquota_nominal_pj": 34,
+     "retencao_dividendos_10pct": null,
+     "ir_devido_no_ajuste_anual": 20000
+    },
+    "resultado": {
+     "base_irpfm": "R$ 900.000,00",
+     "sujeito_ao_irpfm": true,
+     "aliquota_irpfm": "5,00%",
+     "irpfm_bruto": "R$ 45.000,00",
+     "ir_do_ajuste_anual_abatido": "R$ 20.000,00 (informado)",
+     "ir_exclusivo_na_fonte_abatido": "R$ 0,00",
+     "redutor_art_16B": "R$ 0,00",
+     "irpfm_devido": "R$ 25.000,00",
+     "retencao_10pct_dividendos_abatida": "R$ 0,00 (calculada supondo valores iguais nos 12 meses, de uma única empresa)",
+     "saldo": "R$ 25.000,00",
+     "situacao": "a_pagar",
+     "observacao": "REDUTOR NÃO APLICADO: a alíquota efetiva de IRPJ+CSLL da empresa não foi informada. Se a empresa pagar carga efetiva alta (ex.: lucro real perto de 34%), o IRPFM sobre os dividendos pode cair ou zerar; pergunte ao usuário essa alíquota. O saldo é somado ao resultado da declaração de ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base nas regras da Lei 15.270/2025 para a tributação mínima das altas rendas (IRPFM), veja o cálculo detalhado para o seu caso:\n\n### 1. Base de Cálculo Consolidada\nA sua renda total considerada para o IRPFM soma os rendimentos tributáveis (salário) e os dividendos:\n* **Salário:** R$ 300.000,00\n* **Dividendos:** R$ 600.000,00\n* **Base de cálculo total:** **R$ 900.000,00**\n\nComo o valor ultrapassa o limite de isenção de R$ 600.000,00/ano, você está sujeito ao IRPFM.\n\n### 2. Alíquota e IRPFM Bruto\nPara uma renda de R$ 900.000,00 (faixa entre R$ 600.000,00 e R$ 1.200.000,00), a alíquota efetiva cresce linearmente e é de **5,00%**.\n* **IRPFM bruto:** R$ 45.000,00 *(5% sobre R$ 900.000,00)*\n\n### 3. Abatimentos e Saldo Final\nDo IRPFM bruto, são abatidos os impostos já pagos sobre esses rendimentos:\n* **(-) IR do ajuste anual (informado):** R$ 20.000,00\n* **(-) Retenção de 10% sobre dividendos:** R$ 0,00 *(calculada automaticamente pelo sistema com base no recebimento uniforme de R$ 50 mil por mês)*\n* **(-) Redutor de PJ (art. 16-B):** R$ 0,00 *(nenhuma alíquota efetiva de IRPJ+CSLL foi informada)*\n\nFazendo a dedução:\n* **IRPFM devido (complemento):** **R$ 25.000,00** *(R$ 45.000,00 - R$ 20.000,00)*\n\nPortanto, o valor de IRPFM a pagar é de **R$ 25.000,00** (a ser somado ao resultado da sua declaração de ajuste anual).\n\n*Nota: Esta resposta tem caráter informativo e se baseia nas regras da Lei 15.270/2025. Consulte um contador ou advogado tributarista para a validação do seu caso específico.*"
+ },
+ {
+  "id": "irpfm-redutor-30",
+  "categoria": "IRPFM",
+  "pergunta": "Recebo R$ 1,2 milhão por ano de dividendos (R$ 100 mil por mês, com retenção de 10%) de uma empresa com alíquota efetiva de IRPJ+CSLL de 30%. Como fica o IRPFM?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.8,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irpfm_anual",
+    "argumentos": {
+     "rendimentos_tributaveis_anuais": 0,
+     "dividendos_anuais": 1200000,
+     "aliquota_nominal_pj": 34,
+     "aliquota_efetiva_pj": 30
+    },
+    "resultado": {
+     "base_irpfm": "R$ 1.200.000,00",
+     "sujeito_ao_irpfm": true,
+     "aliquota_irpfm": "10,00%",
+     "irpfm_bruto": "R$ 120.000,00",
+     "ir_do_ajuste_anual_abatido": "R$ 0,00 (calculado (tabela anual 2026, desconto simplificado, sem outras deduções))",
+     "ir_exclusivo_na_fonte_abatido": "R$ 0,00",
+     "redutor_art_16B": "R$ 72.000,00",
+     "irpfm_devido": "R$ 48.000,00",
+     "retencao_10pct_dividendos_abatida": "R$ 120.000,00 (calculada supondo valores iguais nos 12 meses, de uma única empresa)",
+     "saldo": "R$ 72.000,00",
+     "situacao": "a_restituir",
+     "observacao": "PJ (30,00%) + IRPFM (10,00%) = 40,00% > 34,00%: redutor aplicado. O saldo é somado ao resultado da declaração de ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base na Lei 15.270/2025, vamos analisar o seu caso considerando um recebimento de R$ 1.200.000,00 por ano em dividendos (R$ 100.000,00 por mês) de uma única empresa cuja alíquota efetiva de IRPJ + CSLL é de 30%.\n\n### 1. Retenção Mensal de 10% sobre Dividendos\nComo cada pagamento mensal ultrapassa o limite de R$ 50.000,00, a empresa deve reter **10%** na fonte sobre o valor total pago em cada mês (art. 6º-A da Lei 15.270/2025).\n* **Valor retido no ano:** R$ 120.000,00 (10% sobre R$ 1.200.000,00).\n\n---\n\n### 2. Apuração da Tributação Mínima Anual (IRPFM)\nComo sua renda total anual (R$ 1.200.000,00) atinge o limite de R$ 1.200.000,00, a alíquota aplicável do IRPFM é de **10%** sobre a base de cálculo.\n\n* **Base de cálculo do IRPFM:** R$ 1.200.000,00\n* **Alíquota aplicável:** 10,00%\n* **IRPFM Bruto:** R$ 120.000,00\n\n#### Abatimentos e Mecanismo de Redução (Anti-bitributação)\nA lei prevê um redutor para evitar a bitributação excessiva quando a soma da alíquota efetiva da PJ (30%) com a alíquota do IRPFM (10%) ultrapassa o teto nominal de referência (34% para as demais empresas):\n\n* **Soma das cargas (PJ + IRPFM):** 30% + 10% = 40% (superior ao limite de 34%).\n* **Redutor aplicado:** R$ 72.000,00\n* **Retenção de 10% sobre dividendos abatida:** R$ 120.000,00\n\n---\n\n### 3. Resultado Final do IRPFM\n* **IRPFM Devido após redutores:** R$ 48.000,00\n* **Menos a retenção já paga na fonte:** (R$ 120.000,00)\n* **Saldo final:** **R$ 72.000,00 a restituir**\n\n---\n*Nota: Esta resposta tem caráter informativo com base nas regras da Lei 15.270/2025 e não substitui a consulta formal a um contador ou especialista tributário.*"
+ },
+ {
+  "id": "irpfm-abaixo-600k",
+  "categoria": "IRPFM",
+  "pergunta": "Tenho R$ 400 mil de salário e R$ 150 mil de dividendos no ano. Pago IRPFM?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.4,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irpfm_anual",
+    "argumentos": {
+     "dividendos_anuais": 150000,
+     "rendimentos_tributaveis_anuais": 400000
+    },
+    "resultado": {
+     "base_irpfm": "R$ 550.000,00",
+     "sujeito_ao_irpfm": false,
+     "aliquota_irpfm": "0,00%",
+     "irpfm_bruto": "R$ 0,00",
+     "ir_do_ajuste_anual_abatido": "R$ 94.244,34 (calculado (tabela anual 2026, desconto simplificado, sem outras deduções))",
+     "ir_exclusivo_na_fonte_abatido": "R$ 0,00",
+     "redutor_art_16B": "R$ 0,00",
+     "irpfm_devido": "R$ 0,00",
+     "retencao_10pct_dividendos_abatida": "R$ 0,00 (calculada supondo valores iguais nos 12 meses, de uma única empresa)",
+     "saldo": "R$ 0,00",
+     "situacao": "zerado",
+     "observacao": "REDUTOR NÃO APLICADO: a alíquota efetiva de IRPJ+CSLL da empresa não foi informada. Se a empresa pagar carga efetiva alta (ex.: lucro real perto de 34%), o IRPFM sobre os dividendos pode cair ou zerar; pergunte ao usuário essa alíquota. O saldo é somado ao resultado da declaração de ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base nos dados informados (R$ 400.000 de salário e R$ 150.000 de dividendos no ano, totalizando R$ 550.000 de renda anual), **você não paga IRPFM** (Imposto de Renda da Pessoa Física Mínimo).\n\n### Detalhes do Cálculo\n\n* **Renda Total Anual:** R$ 550.000,00 (Salário de R$ 400.000,00 + Dividendos de R$ 150.000,00)\n* **Patamar de Isenção do IRPFM:** O IRPFM é aplicável apenas a contribuintes cuja renda anual total supera **R$ 600.000,00**. \n* **Resultado:** Como a sua renda total de R$ 550.000,00 está abaixo do limite de isenção, você está totalmente dispensado da incidência do IRPFM.\n\n---\n*Nota: Esta simulação é informativa e baseada nas regras da Lei 15.270/2025. Não substitui a avaliação de um contador ou advogado tributarista.*"
+ },
+ {
+  "id": "conc-isencao",
+  "categoria": "conceito",
+  "pergunta": "Até qual salário mensal o IR fica zerado a partir de 2026?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.6,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base na Lei 15.270/2025 e nas regras da Receita Federal vigentes a partir de janeiro de 2026, a isenção efetiva do Imposto de Renda (com o imposto devido igual a zero) atinge os rendimentos tributáveis mensais **até R$ 5.000,00**.\n\nEssa isenção é alcançada por meio de um mecanismo duplo:\n1. **Desconto simplificado mensal** (ou deduções legais, o que for mais vantajoso) combinado com a tabela progressiva.\n2. **Redução do imposto mensal** criada pela nova lei, que concede um abatimento de até **R$ 312,89** para quem ganha até R$ 5.000,00, anulando completamente o imposto devido nessa faixa.\n\nPara rendimentos entre **R$ 5.000,01 e R$ 7.350,00**, há uma redução decrescente linear do imposto. A partir de **R$ 7.350,01**, o contribuinte não tem mais direito a essa redução adicional.\n\n*Nota: Esta resposta é informativa e baseia-se na legislação oficial vigente a partir de 2026.*"
+ },
+ {
+  "id": "conc-retencao-10",
+  "categoria": "conceito",
+  "pergunta": "Como funciona a retenção de 10% sobre dividendos?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 4.0,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_retencao_dividendos_mensal",
+    "argumentos": {
+     "dividendos_por_empresa": [
+      60000
+     ]
+    },
+    "resultado": {
+     "por_empresa": [
+      {
+       "empresa": 1,
+       "dividendos": "R$ 60.000,00",
+       "retencao_10pct": "R$ 6.000,00"
+      }
+     ],
+     "total_retido_no_mes": "R$ 6.000,00",
+     "observacao": "A retenção é antecipação: é abatida do IRPFM no ajuste anual."
+    }
+   }
+  ],
+  "resposta": "Com base na Lei 15.270/2025, vigente a partir de 1º de janeiro de 2026, a retenção de 10% sobre lucros e dividendos pagos a pessoas físicas residentes no Brasil funciona da seguinte forma:\n\n* **Regra de incidência por empresa pagadora:** Se uma mesma pessoa jurídica (empresa) pagar mais de **R$ 50.000,00** em lucros e dividendos no mês para a mesma pessoa física, haverá a retenção na fonte à alíquota de **10%** (art. 6º-A da Lei 15.270/2025).\n* **Base de cálculo:** A retenção de 10% incide sobre o **valor TOTAL pago** pela empresa no mês (e não apenas sobre o que excede R$ 50 mil). \n* **Vedação de deduções:** São vedadas quaisquer deduções da base de cálculo desse valor.\n* **Natureza do valor retido:** O imposto retido na fonte é considerado uma antecipação do imposto devido, podendo ser abatido na apuração anual (no IRPFM — Imposto sobre a Renda da Pessoa Física Mínima).\n* **Exceção temporal:** Lucros apurados em resultados até 2025 cujas distribuições tenham sido aprovadas até 31/12/2025 não sofrem essa retenção, conforme as regras de transição.\n\n### Exemplo prático de um mês:\nSe uma única empresa pagar **R$ 60.000,00** de dividendos em um mês a uma pessoa física:\n* Como o valor ultrapassa o limite de R$ 50.000,00, a retenção é aplicada sobre o total.\n* **Valor retido:** R$ 6.000,00 (10% sobre R$ 60.000,00).\n\n*Nota: Esta resposta tem caráter informativo e não substitui a consulta a um contador ou advogado tributarista.*"
+ },
+ {
+  "id": "conc-lucros-2025",
+  "categoria": "conceito",
+  "pergunta": "Lucros de 2025 aprovados pela empresa até 31/12/2025, mas pagos só em 2027, sofrem a retenção de 10%?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.2,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base no texto oficial da Lei 15.270/2025 (trechos [1] e [3]), **lucros de resultados apurados até o ano-calendário de 2025 e cuja distribuição tenha sido aprovada até 31 de dezembro de 2025 NÃO sofrem a retenção de 10%**, desde que o pagamento ocorra nos anos-calendário de 2026, 2027 ou 2028 e observe os termos previstos no ato de aprovação realizado até 31/12/2025.\n\nPortanto, se os lucros de 2025 foram formalmente aprovados até 31/12/2025 e o pagamento em 2027 estava previsto nos termos daquela aprovação, eles **estão isentos** da retenção mensal de 10% sobre dividendos.\n\n*Nota: Esta resposta tem caráter informativo e se baseia nas regras da Lei 15.270/2025. Em caso de dúvidas específicas sobre a documentação societária ou prazos, consulte um contador ou advogado especialista.*"
+ },
+ {
+  "id": "conc-base-irpfm",
+  "categoria": "conceito",
+  "pergunta": "Rendimentos de poupança, LCI e LCA entram na base do IRPFM?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.1,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base nos trechos oficiais da **Lei 15.270/2025** (trechos [3] e [4]), os rendimentos de poupança, LCI e LCA **não entram** na base de cálculo da tributação mínima anual das altas rendas (IRPFM). \n\nA lei estabelece expressamente a exclusão de:\n- Os rendimentos auferidos em **contas de depósitos de poupança** (inciso IV do § 1º do art. 16-A).\n- A remuneração produzida por títulos como **Letra de Crédito Imobiliário (LCI)** e **Certificado de Recebíveis Imobiliários (CRI)** (alíneas \"b\" e \"c\" do inciso V).\n- A remuneração produzida por títulos como **Certificado de Depósito Agropecuário (CDA)**, **Letra de Crédito do Agronegócio (LCA)** e **Certificado de Recebíveis do Agronegócio (CRA)** (inciso VI).\n\n*Nota: Esta resposta tem caráter informativo e baseia-se na legislação vigente (Lei 15.270/2025); em caso de dúvidas específicas sobre o seu planejamento tributário, consulte um contador ou advogado especialista.*"
+ },
+ {
+  "id": "conc-simplificado",
+  "categoria": "conceito",
+  "pergunta": "Qual o limite do desconto simplificado na declaração anual de 2027?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 1.7,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base nos documentos oficiais da Receita Federal e da Lei nº 15.270/2025 (vigente a partir do ano-calendário de 2026, com declaração apresentada em 2027), o limite anual de desconto simplificado é de **R$ 17.640,00**.\n\n*Nota: Esta resposta tem caráter informativo e não substitui a consulta a um contador ou advogado.*"
+ },
+ {
+  "id": "conc-redutor",
+  "categoria": "conceito",
+  "pergunta": "Quais são os limites do redutor do IRPFM para empresas em geral, seguradoras e bancos?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.2,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base na Lei 15.270/2025 e nos documentos oficiais recuperados, os limites máximos (soma nominal das alíquotas de IRPJ e CSLL) utilizados no cálculo do redutor do IRPFM para cada tipo de pessoa jurídica são:\n\n* **Demais pessoas jurídicas (empresas em geral):** 34% (trinta e quatro por cento)\n* **Seguradoras, corretoras e outras instituições financeiras específicas:** 40% (quarenta por cento)\n* **Bancos:** 45% (quarenta e cinco por cento)\n\nEsse redutor é um mecanismo de correção que diminui o valor do IRPFM quando a soma da carga tributária da empresa com a tributação da pessoa física ultrapassa esses patamares, evitando a bitributação e garantindo o equilíbrio fiscal.\n\n*Nota: Esta resposta tem caráter informativo e não substitui a consulta a um contador ou advogado especialista.*"
+ },
+ {
+  "id": "conc-aliquota-irpfm",
+  "categoria": "conceito",
+  "pergunta": "Qual a alíquota máxima do IRPFM e a partir de que renda ela vale?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 1.9,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base nos documentos recuperados (como o resumo oficial do IRPFM), a **alíquota máxima do IRPFM** (Imposto de Renda da Pessoa Física Mínimo) é de **10%**.\n\nEssa alíquota máxima passa a valer para quem possui **rendimentos totais anuais superiores a R$ 1.200.000,00** (ou seja, acima de R$ 1,2 milhão por ano).\n\nPara rendimentos anuais entre R$ 600.000,01 e R$ 1.200.000,00, a alíquota é progressiva e cresce de forma linear de 0% até atingir esses 10%. Abaixo de R$ 600.000,00 ao ano, o contribuinte é isento do IRPFM.\n\n*Nota: Esta resposta tem caráter informativo e baseia-se nas regras da reforma (Lei 15.270/2025).*"
+ },
+ {
+  "id": "conc-dependente",
+  "categoria": "conceito",
+  "pergunta": "Qual o valor da dedução mensal por dependente em 2026?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 1.7,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Com base na tabela oficial da Receita Federal para 2026 (Lei nº 15.270/2025), o valor da **dedução mensal por dependente é de R$ 189,59**.\n\n*Nota: Esta informação tem caráter informativo e reflete as normas vigentes a partir de janeiro de 2026.*"
+ },
+ {
+  "id": "conc-13",
+  "categoria": "conceito",
+  "pergunta": "A redução do imposto da Lei 15.270 vale também para o 13º salário?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.0,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Sim, a redução do imposto instituída pela Lei nº 15.270/2025 **também se aplica** ao cálculo do imposto cobrado exclusivamente na fonte no pagamento do décimo terceiro salário. \n\nConforme o § 3º do art. 3º-A da Lei nº 9.250/1995 (incluído pela Lei nº 15.270/2025):\n\n> *\"A redução do imposto de que trata este artigo também será aplicada no cálculo do imposto cobrado exclusivamente na fonte no pagamento do décimo terceiro salário a que se refere o inciso VIII do caput do art. 7º da Constituição Federal.\"*\n\nPortanto, a regra de isenção efetiva até R$ 5.000,00 e a redução decrescente até R$ 7.350,00 contemplam o pagamento do 13º salário da mesma forma que ocorrem nos rendimentos mensais regulares."
+ },
+ {
+  "id": "comp-pede-dados",
+  "categoria": "comportamento",
+  "pergunta": "Quanto vou pagar de imposto de renda?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 1.9,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Olá! Para que eu possa calcular quanto você vai pagar de Imposto de Renda com as regras da Lei 15.270/2025 (vigentes a partir de 2026), por favor, informe:\n\n1. **Qual é o seu rendimento bruto mensal** (salário, pró-labore, aluguel, etc.)?\n2. **Há alguma dedução mensal** que você gostaria de considerar, como INSS, número de dependentes, pensão alimentícia ou previdência privada? (Caso não informe, utilizarei o desconto simplificado padrão).\n\nAssim que você me passar esses dados, farei o cálculo detalhado para você!"
+ },
+ {
+  "id": "comp-fora-do-escopo",
+  "categoria": "comportamento",
+  "pergunta": "Qual a alíquota do ITCMD sobre heranças no estado de São Paulo?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 2.0,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [],
+  "resposta": "Desculpe, mas o assunto sobre o imposto estadual ITCMD (Imposto sobre Transmissão Causa Mortis e Doação) e suas alíquotas no estado de São Paulo não é coberto pelos documentos recuperados nem pelas regras da Lei 15.270/2025, que trata exclusivamente da reforma do Imposto de Renda da pessoa física federal. \n\nPara consultar as regras e alíquotas do ITCMD em São Paulo, recomendo verificar o site oficial da Secretaria da Fazenda e Planejamento do Estado de São Paulo (Sefaz-SP) ou consultar um contador ou advogado especialista."
+ },
+ {
+  "id": "comp-premissa-errada-7350",
+  "categoria": "comportamento",
+  "pergunta": "Como a reforma deixou isento quem ganha até R$ 7.350, quem ganha R$ 7.000 não paga nada, certo?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.6,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "rendimento_bruto_mensal": 7000
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 7.000,00",
+     "deducao_aplicada": "R$ 607,20 (desconto simplificado mensal (R$ 607,20))",
+     "base_de_calculo": "R$ 6.392,80",
+     "imposto_pela_tabela_progressiva": "R$ 849,29",
+     "reducao_lei_15270": "R$ 46,61",
+     "irrf_mensal": "R$ 802,69",
+     "aliquota_efetiva_sobre_bruto": "11,47%"
+    }
+   }
+  ],
+  "resposta": "**Não, quem ganha R$ 7.000,00 por mês ainda paga Imposto de Renda**, embora tenha direito a uma redução no valor devido.\n\n### Entendendo a regra da Lei 15.270/2025:\n\n* **Isenção Efetiva até R$ 5.000,00:** A isenção total e direta aplica-se apenas aos rendimentos mensais de até R$ 5.000,00.\n* **Redução Decrescente entre R$ 5.000,01 e R$ 7.350,00:** Para quem ganha acima de R$ 5.000,00 até R$ 7.350,00, existe uma redução decrescente do imposto (calculada pela fórmula da lei ou pelo desconto simplificado). O imposto vai diminuindo à medida que a renda se aproxima de R$ 5.000,00 e vai se tornando menor à medida que se aproxima de R$ 7.350,00, mas **não zera imediatamente** para quem está nessa faixa intermediária.\n* **Acima de R$ 7.350,00:** Não há nenhuma redução especial, aplicando-se integralmente a tabela progressiva tradicional.\n\n---\n\n### Simulação para um rendimento bruto de R$ 7.000,00 mensais:\n*(Considerando o desconto simplificado mensal de R$ 607,20)*\n\n1. **Rendimento Bruto Mensal:** R$ 7.000,00\n2. **Base de Cálculo:** R$ 6.392,80\n3. **Imposto pela Tabela Progressiva:** R$ 849,29\n4. **Redução da Lei 15.270/2025:** R$ 46,61\n5. **IRRF Final a Pagar:** **R$ 802,69**\n\nComo podemos ver, o imposto não é zerado para quem ganha R$ 7.000,00; a pessoa paga R$ 802,69 após a aplicação da redução prevista em lei.\n\n*Nota: Esta resposta tem caráter informativo e baseia-se nas regras da Lei 15.270/2025.*"
+ },
+ {
+  "id": "comp-premissa-errada-6000",
+  "categoria": "comportamento",
+  "pergunta": "Meu chefe disse que com salário de R$ 6.000 vou ficar isento de IR a partir de 2026. É verdade?",
+  "ok": true,
+  "falhas": [],
+  "valores_sem_origem": [],
+  "segundos": 3.3,
+  "modelo": "gemini-3.5-flash-lite",
+  "ferramentas": [
+   {
+    "nome": "calcular_irrf_mensal",
+    "argumentos": {
+     "inss": 0,
+     "pensao_alimenticia": 0,
+     "previdencia_privada": 0,
+     "rendimento_bruto_mensal": 6000,
+     "dependentes": 0
+    },
+    "resultado": {
+     "rendimento_bruto_mensal": "R$ 6.000,00",
+     "deducao_aplicada": "R$ 607,20 (desconto simplificado mensal (R$ 607,20))",
+     "base_de_calculo": "R$ 5.392,80",
+     "imposto_pela_tabela_progressiva": "R$ 574,29",
+     "reducao_lei_15270": "R$ 179,75",
+     "irrf_mensal": "R$ 394,54",
+     "aliquota_efetiva_sobre_bruto": "6,58%"
+    }
+   }
+  ],
+  "resposta": "Não, não é verdade. A partir de 2026, com um salário bruto de R$ 6.000,00, você **não** ficará totalmente isento do Imposto de Renda. \n\nA regra da Lei 15.270/2025 estabelece isenção efetiva apenas para quem recebe até R$ 5.000,00 por mês. Para rendimentos entre R$ 5.000,01 e R$ 7.350,00, há uma **redução decrescente** no imposto, mas ainda há imposto a pagar.\n\nVeja como o cálculo do IRRF mensal fica para o seu salário de R$ 6.000,00 (considerando o desconto simplificado mensal e sem dependentes ou outras deduções):\n\n1. **Rendimento bruto mensal:** R$ 6.000,00\n2. **Desconto simplificado mensal:** R$ 607,20\n3. **Base de cálculo:** R$ 5.392,80\n4. **Imposto calculado pela tabela progressiva:** R$ 574,29\n5. **Redução da Lei 15.270/2025:** R$ 179,75\n6. **Imposto de Renda retido na fonte (IRRF):** R$ 394,54\n\nPortanto, haverá desconto de Imposto de Renda no seu contracheque, no valor de R$ 394,54 por mês.\n\n*Nota: Esta resposta tem caráter informativo e se baseia nas regras da Lei 15.270/2025. Para uma análise detalhada do seu caso, consulte um contador ou profissional especializado.*"
+ }
+]

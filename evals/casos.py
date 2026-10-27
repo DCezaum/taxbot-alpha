@@ -82,7 +82,7 @@ CASOS = [
     {"id": "irpfm-redutor-30", "categoria": "IRPFM",
      "pergunta": "Recebo R$ 1,2 milhão por ano de dividendos (R$ 100 mil por mês, com retenção de 10%) de uma "
                  "empresa com alíquota efetiva de IRPJ+CSLL de 30%. Como fica o IRPFM?",
-     "deve_conter": ["72.000,00", "48.000,00"], "ferramentas": [IRPFM]},
+     "deve_conter": ["72.000,00"], "deve_conter_algum": [["restitu"]], "ferramentas": [IRPFM]},
     {"id": "irpfm-abaixo-600k", "categoria": "IRPFM",
      "pergunta": "Tenho R$ 400 mil de salário e R$ 150 mil de dividendos no ano. Pago IRPFM?",
      "deve_conter_algum": [NEGACAO + ["não está sujeit", "isento"]], "nao_deve_conter": ["alíquota de 10%"]},

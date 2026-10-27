@@ -25,6 +25,15 @@ def escapar_cifrao(s: str) -> str:
     return (s or "").replace("$", "\\$")
 
 
+def com_aviso(pedacos, aviso):
+    """Repassa o texto em streaming escapando o cifrão e apaga o aviso de espera ao chegar o primeiro pedaço."""
+    for i, pedaco in enumerate(pedacos):
+        if i == 0:
+            aviso.empty()
+        yield escapar_cifrao(pedaco)
+    aviso.empty()
+
+
 def chave_gemini() -> str | None:
     try:
         return st.secrets.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
@@ -107,16 +116,22 @@ if pergunta:
         st.markdown(escapar_cifrao(pergunta))
 
     with st.chat_message("assistant"):
-        fontes, ferramentas = [], []
-        with st.spinner("🔎 Consultando os documentos e calculando..."):
-            try:
-                r = agente.responder(pergunta, historico_anterior)
-                texto, fontes, ferramentas = r.texto, r.fontes, r.ferramentas
-            except LimiteDeUsoError as e:
-                texto = f"⏳ {e}"
-            except Exception as e:  # noqa: BLE001 — mostra o erro ao usuário em vez de quebrar a página
-                texto = f"⚠️ Erro inesperado: `{e}`"
-        st.markdown(escapar_cifrao(texto))
+        fontes, ferramentas, texto = [], [], ""
+        aviso = st.empty()
+        aviso.caption("🔎 Consultando os documentos e calculando...")
+        try:
+            r, pedacos = agente.responder_stream(pergunta, historico_anterior)
+            # O texto aparece conforme o Gemini escreve; o aviso some no primeiro pedaço.
+            st.write_stream(com_aviso(pedacos, aviso))
+            texto, fontes, ferramentas = r.texto, r.fontes, r.ferramentas
+        except LimiteDeUsoError as e:
+            aviso.empty()
+            texto = f"⏳ {e}"
+            st.markdown(texto)
+        except Exception as e:  # noqa: BLE001 — mostra o erro ao usuário em vez de quebrar a página
+            aviso.empty()
+            texto = f"⚠️ Erro inesperado: `{e}`"
+            st.markdown(texto)
         mostrar_detalhes(fontes, ferramentas)
 
     st.session_state.history.append(
